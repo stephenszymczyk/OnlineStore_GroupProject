@@ -5,21 +5,20 @@ import org.onlinestore.people.Customer;
 import org.onlinestore.people.Manager;
 import org.onlinestore.people.Person;
 
+//Controller class
 public class OnlineStore {
-
+    
+	//Inventory belongs to OnlineStore
     private Inventory inventory;
     private ArrayList<Person> users;
-    private ArrayList<Manager> managers;
 
     public OnlineStore() {
         this.inventory = new Inventory();
-        this.users = new ArrayList<Person>();
-        this.managers = new ArrayList<Manager>();
+        this.users = new ArrayList<>();
 
-        Manager defaultManager = new Manager("Store Manager", "manager", "ottertail", this);
-
+        // Default manager values
+        Manager defaultManager = new Manager("Lou Sassle", "manager_username", "ottertail", this);
         this.users.add(defaultManager);
-        this.managers.add(defaultManager);
     }
 
     public Inventory getInventory() {
@@ -31,25 +30,47 @@ public class OnlineStore {
     }
 
     public ArrayList<Manager> getManagers() {
+        ArrayList<Manager> managers = new ArrayList<>();
+        for (Person p : users) {
+            if (p instanceof Manager) {
+                managers.add((Manager) p);
+            }
+        }
         return managers;
     }
 
     public void addUser(Person person) {
-        // LOGIC GOES HERE
+        users.add(person);
     }
 
-    public boolean usernameExists(String username) {
-        // LOGIC GOES HERE
-        return false;
+
+    public boolean usernameAvailable(String username) {
+        for (Person p : users) {
+            if (p.getUsername().equalsIgnoreCase(username)) {
+                return false; 
+            }
+        }
+        return true; 
     }
 
     public Person login(String username, String password) {
-        // LOGIC GOES HERE
+        for (Person p : users) {
+            if (p.getUsername().equals(username) && p.getPassword().equals(password)) {
+                return p;
+            }
+        }
+        System.out.println("Incorrect username or password.");
         return null;
     }
 
     public Customer createAccount(String name, String username, String password) {
-        // LOGIC GOES HERE
-        return null;
+        if (!usernameAvailable(username)) {
+            System.out.println("This username is unavailable.");
+            return null; 
+        }
+
+        Customer c = new Customer(name, username, password, null, 0.0);
+        users.add(c);
+        return c;
     }
 }

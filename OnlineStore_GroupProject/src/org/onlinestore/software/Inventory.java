@@ -21,7 +21,7 @@ public class Inventory {
         return null;
     }
 
-    public void addItem(Item item) {
+    public void addItem(Item newItem) {
         // LOGIC GOES HERE
     }
 

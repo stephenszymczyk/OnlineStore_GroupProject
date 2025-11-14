@@ -5,36 +5,46 @@ public class Item {
     private double price;
     private String name;
     private String description;
+    private int quantity;  
 
     public Item() {}
 
-    public Item(double price, String name, String description) {
+    public Item(double price, String name, String description, int quantity) {
         this.price = price;
         this.name = name;
         this.description = description;
+        this.quantity = quantity;
     }
 
     public double getPrice() {
-    	return price; 
+        return price; 
     }
     
     public void setPrice(double price) {
-    	this.price = price; 
+        this.price = price; 
     }
 
     public String getName() {
-    	return name; 
+        return name; 
     }
     
     public void setName(String name) {
-    	this.name = name; 
+        this.name = name; 
     }
 
     public String getDescription() {
-    	return description; 
+        return description; 
     }
     
     public void setDescription(String description) {
-    	this.description = description; 
+        this.description = description; 
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

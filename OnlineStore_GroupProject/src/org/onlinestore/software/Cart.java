@@ -17,22 +17,22 @@ public class Cart {
     }
 
     public void addToCart(Item item) {
-        // FIX ME
+        // LOGIC GOES HERE
     }
 
     public void addToCart(Item item, int quantity) {
-        // FIX ME
+    	// LOGIC GOES HERE
     }
 
     public void checkOut() {
-        // FIX ME
+    	// LOGIC GOES HERE
     }
 
     public void putItemBack(Item item) {
-        // FIX ME
+    	// LOGIC GOES HERE
     }
 
     public void cancelTransaction() {
-        // FIX ME
+    	// LOGIC GOES HERE
     }
 }
