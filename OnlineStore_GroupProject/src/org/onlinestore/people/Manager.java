@@ -1,40 +1,44 @@
 package org.onlinestore.people;
 
-import org.onlinestore.software.Inventory;
+import org.onlinestore.software.OnlineStore;
 import org.onlinestore.software.Item;
 
 public class Manager extends Person {
 
-    private Inventory inventory;
+    private OnlineStore store;
 
     public Manager() {}
 
-    public Manager(String name, String username, String password, Inventory inventory) {
+    public Manager(String name, String username, String password, OnlineStore store) {
         super(name, username, password);
-        this.inventory = inventory;
+        this.store = store;
     }
 
-    public Inventory getInventory() { 
-    	return inventory; 
+    public OnlineStore getStore() {
+        return store;
     }
-    
-    public void setInventory(Inventory inventory) {
-    	this.inventory = inventory; 
+
+    public void setStore(OnlineStore store) {
+        this.store = store;
     }
 
     public void addItem(Item item) {
-        // FIX ME
+        // LOGIC GOES HERE
+        store.getInventory().addItem(item);
     }
 
     public void editItem(Item item, int quantity) {
-        // FIX ME
+        // LOGIC GOES HERE
+        store.getInventory().updateQuantity(item, quantity);
     }
 
     public void removeItem(Item item) {
-        // FIX ME
+        // LOGIC GOES HERE
+        store.getInventory().removeItem(item);
     }
 
     public void viewInventory() {
-        // FIX ME
+        // LOGIC GOES HERE
+        store.getInventory().printInventory();
     }
 }

@@ -1,7 +1,7 @@
 package org.onlinestore.people;
 
-import org.onlinestore.software.Cart;
 import org.onlinestore.software.Address;
+import org.onlinestore.software.Cart;
 
 public class Customer extends Person {
 
@@ -18,31 +18,31 @@ public class Customer extends Person {
         this.cart = new Cart();
     }
 
-    public Address getAddress() { 
-    	return address; 
+    public Address getAddress() {
+        return address;
     }
     
-    public void setAddress(Address address) { 
-    	this.address = address; 
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public double getTaxRate() {
-    	return taxRate; 
+        return taxRate;
     }
     
     public void setTaxRate(double taxRate) {
-    	this.taxRate = taxRate; 
+        this.taxRate = taxRate;
     }
 
     public Cart getCart() {
-    	return cart; 
+        return cart;
     }
     
     public void setCart(Cart cart) {
-    	this.cart = cart; 
+        this.cart = cart;
     }
 
     public void updateTaxRate() {
-        // FIX ME
+        // LOGIC GOES HERE
     }
 }

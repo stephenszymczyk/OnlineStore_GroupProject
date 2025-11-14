@@ -1,6 +1,7 @@
 package org.onlinestore.people;
 
 public class Person {
+
     private String name;
     private String username;
     private String password;
@@ -14,30 +15,30 @@ public class Person {
     }
 
     public String getName() {
-    	return name; 
+        return name;
     }
     
     public void setName(String name) {
-    	this.name = name; 
+        this.name = name;
     }
 
     public String getUsername() {
-    	return username; 
+        return username;
     }
     
     public void setUsername(String username) {
-    	this.username = username; 
+        this.username = username;
     }
 
     public String getPassword() {
-    	return password; 
+        return password;
     }
     
     public void setPassword(String password) {
-    	this.password = password; 
+        this.password = password;
     }
 
     public void updatePassword(String newPassword, String confirmPassword) {
-        //FIX ME
+        // LOGIC GOES HERE
     }
 }

@@ -9,15 +9,31 @@ public class Inventory {
     public Inventory() {}
 
     public ArrayList<Item> getItems() {
-    	return items; 
+        return items; 
     }
-    
+
     public void setItems(ArrayList<Item> items) {
-    	this.items = items; 
+        this.items = items; 
     }
 
     public Item findItem(String itemName) {
-        // FIX ME
+        // LOGIC GOES HERE
         return null;
+    }
+
+    public void addItem(Item item) {
+        // LOGIC GOES HERE
+    }
+
+    public void updateQuantity(Item item, int quantity) {
+        // LOGIC GOES HERE
+    }
+
+    public void removeItem(Item item) {
+        // LOGIC GOES HERE
+    }
+
+    public void printInventory() {
+        // LOGIC GOES HERE
     }
 }
