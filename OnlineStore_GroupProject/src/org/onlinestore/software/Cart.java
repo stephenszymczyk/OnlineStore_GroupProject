@@ -8,8 +8,13 @@ public class Cart {
 
     public Cart() {}
 
-    public ArrayList<Item> getItems() { return items; }
-    public void setItems(ArrayList<Item> items) { this.items = items; }
+    public ArrayList<Item> getItems() {
+    	return items; 
+    }
+    
+    public void setItems(ArrayList<Item> items) {
+    	this.items = items; 
+    }
 
     public void addToCart(Item item) {
         // FIX ME
