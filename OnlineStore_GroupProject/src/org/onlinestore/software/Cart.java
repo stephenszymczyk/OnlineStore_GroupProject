@@ -1,6 +1,7 @@
 package org.onlinestore.software;
 
 import java.util.ArrayList;
+import org.onlinestore.software.Inventory.java
 //items and transaction stuff
 public class Cart {
 
@@ -39,8 +40,7 @@ public class Cart {
     }
 
     public void putItemBack(Item item){
-        //search for item
-        //remove from cart
+        items.remove(item)
         //place in inventory
     }
 
@@ -52,4 +52,5 @@ public class Cart {
     }
 
 }
+
 
