@@ -8,7 +8,7 @@ package org.onlinestore;
 //customer creates account but username is unavailable:    PASS
 //close window (exit program):                             PASS
 //user selects an invalid entry:                           PASS
-
+// TESTING COMMIT (NO CHANGES MADE)
 
 import java.util.Scanner;
 import org.onlinestore.software.OnlineStore;
@@ -142,4 +142,5 @@ public class Main {
             }
         }
     }
+
 }
