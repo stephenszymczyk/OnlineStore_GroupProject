@@ -16,23 +16,20 @@ public class Cart {
     	this.items = items; 
     }
 
-    public void addToCart(Item item) {
+    public void addItem(Item item) {
         // LOGIC GOES HERE
     }
 
-    public void addToCart(Item item, int quantity) {
+    public void addItems(Item item, int quantity) {
     	// LOGIC GOES HERE
     }
 
-    public void checkOut() {
+    public void removeItem(Item item) {
     	// LOGIC GOES HERE
     }
 
-    public void putItemBack(Item item) {
+    public void removeAll() {
     	// LOGIC GOES HERE
     }
 
-    public void cancelTransaction() {
-    	// LOGIC GOES HERE
-    }
 }
