@@ -17,23 +17,42 @@ public class Inventory {
     }
 
     public Item findItem(String itemName) {
-        // LOGIC GOES HERE
+        for (Item item : items) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
         return null;
     }
 
     public void addItem(Item newItem) {
-        // LOGIC GOES HERE
+        Item itemExists = findItem(newItem.getName());
+
+        if (itemExists != null) {
+        	itemExists.setQuantity(itemExists.getQuantity() + newItem.getQuantity());
+        } 
+        else {
+            items.add(newItem);
+        }
     }
 
     public void updateQuantity(Item item, int quantity) {
-        // LOGIC GOES HERE
+        if (items.contains(item)) {
+            item.setQuantity(quantity);
+        }
     }
 
     public void removeItem(Item item) {
-        // LOGIC GOES HERE
+        items.remove(item);
     }
 
     public void printInventory() {
-        // LOGIC GOES HERE
+        for (Item item : items) {
+            System.out.println("Name: " + item.getName());
+            System.out.println("Price: " + item.getPrice());
+            System.out.println("Quantity: " + item.getQuantity());
+            System.out.println("Description: " + item.getDescription());
+            System.out.println();
+        }
     }
 }

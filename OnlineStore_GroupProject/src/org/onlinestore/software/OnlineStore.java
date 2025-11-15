@@ -17,7 +17,7 @@ public class OnlineStore {
         this.users = new ArrayList<>();
 
         // Default manager values
-        Manager defaultManager = new Manager("Lou Sassle", "manager_username", "ottertail", this);
+        Manager defaultManager = new Manager("Lou Sassle", "manager", "ottertail", this);
         this.users.add(defaultManager);
     }
 

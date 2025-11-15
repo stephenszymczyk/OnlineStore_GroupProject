@@ -14,6 +14,7 @@ import java.util.Scanner;
 import org.onlinestore.software.OnlineStore;
 import org.onlinestore.people.Manager;
 import org.onlinestore.people.Person;
+import org.onlinestore.software.Item;
 
 public class Main {
 
@@ -50,9 +51,9 @@ public class Main {
 
                     if (loggedIn instanceof Manager) {
                         System.out.println("Manager login successful. Welcome " + loggedIn.getName() + ".");
-                        // Display manager home page options
-                        return;
-                    } 
+                        displayManagerHomepage(scanner, (Manager) loggedIn, store);
+                        break;
+                    }
                     else {
                         System.out.println("Customer login successful. Welcome " + loggedIn.getName() + ".");
                         // Display customer home page options
@@ -79,6 +80,65 @@ public class Main {
 
                 default:
                     System.out.println("Invalid entry.");
+            }
+        }
+    }
+    
+    public static void displayManagerHomepage(Scanner scanner, Manager manager, OnlineStore store) {
+
+        while (true) {
+            System.out.println("\nManager Home Page");
+            System.out.println("1. View Inventory");
+            System.out.println("2. Add Item");
+            System.out.println("3. Edit Item Quantity");
+            System.out.println("4. Remove Item");
+            System.out.println("5. Logout");
+
+            System.out.print("Select an option: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+
+                case "1":
+                    manager.viewInventory();
+                    break;
+                
+
+                case "2":  // FINISH ME: CREATE EXCEPTIONS FOR INVALID ENTRIES 
+                    System.out.print("Enter item name: ");
+                    String itemName = scanner.nextLine();
+
+                    System.out.print("Enter item price: ");
+                    double itemPrice = scanner.nextDouble();
+                    scanner.nextLine(); 
+
+                    System.out.print("Enter item description: ");
+                    String itemDescription = scanner.nextLine();
+
+                    System.out.print("Enter item quantity: ");
+                    int itemQuantity = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Item newItem = new Item(itemPrice, itemName, itemDescription, itemQuantity);
+                    manager.addItem(newItem);
+
+                    System.out.println("Item added successfully.");
+                    break;
+
+                case "3":
+                    System.out.println("Edit Item"); // FINISH ME
+                    break;
+
+                case "4":
+                    System.out.println("Remove Item"); // FINISH ME
+                    break;
+
+                case "5":
+                    System.out.println("Log Out");
+                    return;
+
+                default:
+                    System.out.println("Invalid selection.");
             }
         }
     }
