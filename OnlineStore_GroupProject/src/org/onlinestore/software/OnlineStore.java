@@ -71,6 +71,8 @@ public class OnlineStore {
 
         Customer c = new Customer(name, username, password, null, 0.0);
         users.add(c);
+
+        System.out.println("Account created successfully.");
         return c;
     }
 }
