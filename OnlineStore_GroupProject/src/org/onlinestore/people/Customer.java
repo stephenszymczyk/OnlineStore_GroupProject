@@ -43,19 +43,8 @@ public class Customer extends Person {
     }
 
     public void updateTaxRate() {
-        // LOGIC GOES HERE
-    }
-
-    public void cancelTrasaction() {
-
-    }
-
-    public void putItemBack(){
-
-    }
-
-    public void checkOut(){
-
+        // LOGIC GOES HERE TODO: tax rate based on what?
     }
 
 }
+
