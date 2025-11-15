@@ -4,9 +4,9 @@ import org.onlinestore.software.Address;
 import org.onlinestore.software.Cart;
 
 public class Customer extends Person {
-
+    //taxRate moved to store
     private Address address;
-    private double taxRate;
+    //private double taxRate;
     private Cart cart;
 
     public Customer() {}
@@ -26,13 +26,13 @@ public class Customer extends Person {
         this.address = address;
     }
 
-    public double getTaxRate() {
-        return taxRate;
-    }
+    //public double getTaxRate() {
+    //    return taxRate;
+    //}
     
-    public void setTaxRate(double taxRate) {
-        this.taxRate = taxRate;
-    }
+    //public void setTaxRate(double taxRate) {
+    //    this.taxRate = taxRate;
+    //}
 
     public Cart getCart() {
         return cart;
@@ -42,9 +42,10 @@ public class Customer extends Person {
         this.cart = cart;
     }
 
-    public void updateTaxRate() {
+    //public void updateTaxRate() { //moved to Store
         // LOGIC GOES HERE TODO: tax rate based on what?
-    }
+    //}
 
 }
+
 
