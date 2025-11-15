@@ -1,6 +1,6 @@
 package org.onlinestore.software;
 
-import java.util.ArrayList;
+import java.util.ArrayList.java;
 import org.onlinestore.software.Inventory.java
 //items and transaction stuff
 public class Cart {
@@ -22,18 +22,22 @@ public class Cart {
     }
 
     public void addItems(Item item, int quantity) {
-    	// LOGIC GOES HERE
+    	if(item==null || quantity <=0){
+            return;
+        }
     }
 
     public void removeItem(Item item) {
-    	// LOGIC GOES HERE
+    	if (item == null){
+            return;
+        }
     }
 
     public void removeAll() {
-    	// LOGIC GOES HERE
+     items.clear();
     }
     
-    public void cancelTrasaction() {
+    public void cancelTransaction() {
         Items tempItems = items;
         removeAll();
         //place all items back in inventory
@@ -45,12 +49,32 @@ public class Cart {
     }
 
     public void checkOut(){
-        //for each item in Cart
+        //Display error if trying to checkOut with nothing in cart
+        if (items.isEmpty()){
+            System.out.println("Cart is empty. Add items to proceed to checkout.");
+            return;}
             //sum price
-        //apply taxRate
-        //create transaction record
+        double subtotal = 0.0;
+        for(Item item : items){
+            subtotal += item.getPrice();
+        }
+        //apply taxRate (Placeholder taxrate of 9%, can be adjusted)
+        double taxrate = 0.09;
+        double tax = subtotal * taxRate;
+        double total = subtotal + tax;
+        
+        //Transaction Display
+        System.out.println("Checkout Summary:");
+        System.out.println("Items in cart: " + items.size());
+        System.out.printf("Subtotal: $%.2f%n", subtotal);
+        System.out.printf("Tax (%.1f%%): $%.2f%n", taxRate * 100, tax);
+        System.out.printf("Total: $%.2f%n", total);
+
+        //Empties cart once user succesfully completes transaction
+        items.clear();
     }
 
 }
+
 
 
