@@ -8,7 +8,11 @@ package org.onlinestore;
 //customer creates account but username is unavailable:    PASS
 //close window (exit program):                             PASS
 //user selects an invalid entry:                           PASS
-// TESTING COMMIT (NO CHANGES MADE)
+//manager views inventory                                  PASS
+//manager creates new item                                 PASS
+//manager edits item quantity                              PASS
+//manager enters invalid quantity                          PASS
+//manager removes item                                     PASS
 
 import java.util.Scanner;
 import org.onlinestore.software.OnlineStore;
@@ -126,11 +130,57 @@ public class Main {
                     break;
 
                 case "3":
-                    System.out.println("Edit Item"); // FINISH ME
+                    System.out.print("Enter item name: ");
+                    String editName = scanner.nextLine();
+
+                    Item itemToEdit = store.getInventory().findItem(editName);
+
+                    if (itemToEdit == null) {
+                        System.out.println("Item not found.");
+                        break;
+                    }
+
+                    System.out.println("Current quantity: " + itemToEdit.getQuantity());
+
+                    int newQuantity;
+
+                    while (true) {
+                        System.out.print("Enter new quantity: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Invalid entry. Please enter a positive integer quantity.");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        newQuantity = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (newQuantity < 0) {
+                            System.out.println("Invalid entry. Please enter a positive integer quantity.");
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    manager.editQuantity(itemToEdit, newQuantity);
+                    System.out.println("Quantity updated.");
                     break;
 
                 case "4":
-                    System.out.println("Remove Item"); // FINISH ME
+                    System.out.print("Enter item name: ");
+                    String removeName = scanner.nextLine();
+
+                    Item itemToRemove = store.getInventory().findItem(removeName);
+
+                    if (itemToRemove == null) {
+                        System.out.println("Item not found.");
+                        break;
+                    }
+
+                    manager.removeItem(itemToRemove);
+                    System.out.println("Item has been removed from inventory.");
                     break;
 
                 case "5":

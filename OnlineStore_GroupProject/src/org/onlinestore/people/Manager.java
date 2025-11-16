@@ -19,7 +19,7 @@ public class Manager extends Person {
         store.getInventory().addItem(item);
     }
 
-    public void editItem(Item item, int quantity) {
+    public void editQuantity(Item item, int quantity) {
         store.getInventory().updateQuantity(item, quantity);
     }
 

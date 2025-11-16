@@ -1,7 +1,7 @@
 package org.onlinestore.software;
 
-import java.util.ArrayList.java;
-import org.onlinestore.software.Inventory.java
+import java.util.ArrayList;
+import org.onlinestore.software.Inventory;
 //items and transaction stuff
 public class Cart {
 
