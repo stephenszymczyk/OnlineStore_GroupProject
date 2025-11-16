@@ -11,6 +11,8 @@ public class OnlineStore {
 	//Inventory belongs to OnlineStore
     private Inventory inventory;
     private ArrayList<Person> users;
+    
+    
 
     public OnlineStore() {
         this.inventory = new Inventory();
@@ -19,6 +21,15 @@ public class OnlineStore {
         // Default manager values
         Manager defaultManager = new Manager("Lou Sassle", "manager", "ottertail", this);
         this.users.add(defaultManager);
+
+        createDefaultItems();
+    }
+    
+    //default inventory items for testing methods
+    private void createDefaultItems() {
+        inventory.addItem(new Item(9.99, "Mousepad", "Black felt mousepad", 60));
+        inventory.addItem(new Item(24.99, "Lamp", "Stainless steel 120V lamp", 20));
+        inventory.addItem(new Item(15.00, "Hat", "Brown baseball cap", 75));
     }
 
     public Inventory getInventory() {
