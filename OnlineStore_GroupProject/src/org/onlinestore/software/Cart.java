@@ -5,9 +5,12 @@ import org.onlinestore.software.Inventory;
 //items and transaction stuff
 public class Cart {
 
-    private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Item> items = new ArrayList<Item>();
+    Customer customer;
 
-    public Cart() {}
+    public Cart(Customer customer) {
+        this.customer = customer;
+    }
 
     public ArrayList<Item> getItems() {
     	return items; 
@@ -28,24 +31,25 @@ public class Cart {
     }
 
     public void removeItem(Item item) {
-    	if (item == null){
-            return;
+    	if (item != null){
+            items.remove(item);
         }
     }
 
     public void removeAll() {
-     items.clear();
+        items.clear();
     }
     
-    public void cancelTransaction() {
-        Items tempItems = items;
-        removeAll();
-        //place all items back in inventory
+    public void cancelTransaction(Inventory inventory) {
+        for (Item item : items) {
+            inventory.addItem(item);
+            removeItem(item);
+        }
     }
 
-    public void putItemBack(Item item){
+    public void putItemBack(Item item, Inventory inventory){
         items.remove(item)
-        //place in inventory
+        inventory.addItem(item);
     }
 
     public void checkOut(){
@@ -59,7 +63,7 @@ public class Cart {
             subtotal += item.getPrice();
         }
         //apply taxRate (Placeholder taxrate of 9%, can be adjusted)
-        double taxrate = 0.09;
+        double taxrate = customer.getTaxRate();
         double tax = subtotal * taxRate;
         double total = subtotal + tax;
         
