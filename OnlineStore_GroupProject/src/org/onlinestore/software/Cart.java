@@ -1,7 +1,7 @@
 package org.onlinestore.software;
 
 import java.util.ArrayList;
-import org.onlinestore.software.Inventory;
+import org.onlinestore.people.Customer;
 //items and transaction stuff
 public class Cart {
 
@@ -79,6 +79,7 @@ public class Cart {
     }
 
 }
+
 
 
 
