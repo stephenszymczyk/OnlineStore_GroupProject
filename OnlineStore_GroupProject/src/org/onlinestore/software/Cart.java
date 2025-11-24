@@ -48,7 +48,7 @@ public class Cart {
     }
 
     public void putItemBack(Item item, Inventory inventory){
-        items.remove(item)
+        items.remove(item);
         inventory.addItem(item);
     }
 
@@ -79,6 +79,7 @@ public class Cart {
     }
 
 }
+
 
 
 
