@@ -1,18 +1,34 @@
 package org.onlinestore;
 
 //DOCUMENTATION OF TESTED SCENARIOS
-//manager logs in with default credentials:                PASS
-//manager enters incorrect username or password:           PASS
-//customer creates account followed by login:              PASS
-//customer enters incorrect username or password:          PASS
-//customer creates account but username is unavailable:    PASS
-//close window (exit program):                             PASS
-//user selects an invalid entry:                           PASS
-//manager views inventory                                  PASS
-//manager creates new item                                 PASS
-//manager edits item quantity                              PASS
-//manager enters invalid quantity                          PASS
-//manager removes item                                     PASS
+//manager logs in with default credentials                                   PASS
+//manager enters incorrect username or password                              PASS
+//customer creates account followed by login                                 PASS
+//customer enters incorrect username or password                             PASS
+//customer creates account but username is unavailable                       PASS
+//close window (exit program)                                                PASS
+//user selects an invalid entry                                              PASS
+//manager views inventory                                                    PASS
+//manager creates new item                                                   PASS
+//manager edits item quantity                                                PASS
+//manager enters invalid quantity                                            PASS
+//manager removes item                                                       PASS
+//manager logs out                                                           PASS
+//customer views inventory                                                   PASS
+//customer adds item to cart                                                 PASS
+//customer attempts to add item that is not found in inventory               PASS
+//customer views cart                                                        PASS
+//customer removes item from cart                                            PASS
+//customer attempts to remove item that is not found in cart                 PASS
+//customer selects checkout                                                  PASS
+//customer confirms shipping address                                         PASS
+//customer updates shipping address                                          PASS
+//customer enters payment information                                        PASS
+//customer enters invalid payment information                                PASS
+//customer confirms transaction                                              PASS
+//customer cancels transaction                                               PASS
+//customer logs out                                                          PASS
+
 
 import java.util.Scanner;
 import org.onlinestore.software.OnlineStore;
