@@ -4,7 +4,8 @@ import org.onlinestore.software.Address;
 import org.onlinestore.software.Cart;
 
 public class Customer extends Person {
-    private Address address;
+
+    private Address address;     
     private double taxRate = 0.09;
     private Cart cart;
 
@@ -12,9 +13,13 @@ public class Customer extends Person {
         this.cart = new Cart(this);
     }
 
-    public Customer(String name, String username, String password, Address address, double taxRate) {
+    public Customer(String name, String username, String password, 
+                    Address address, double taxRate) {
+
         super(name, username, password);
+
         this.address = address;
+
         this.taxRate = taxRate;
         this.cart = new Cart(this);
     }

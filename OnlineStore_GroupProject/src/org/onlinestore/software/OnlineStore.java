@@ -5,14 +5,11 @@ import org.onlinestore.people.Customer;
 import org.onlinestore.people.Manager;
 import org.onlinestore.people.Person;
 
-//Controller class
 public class OnlineStore {
     
-	//Inventory belongs to OnlineStore
+    //Inventory belongs to OnlineStore
     private Inventory inventory;
     private ArrayList<Person> users;
-    
-    
 
     public OnlineStore() {
         this.inventory = new Inventory();
@@ -54,7 +51,6 @@ public class OnlineStore {
         users.add(person);
     }
 
-
     public boolean usernameAvailable(String username) {
         for (Person p : users) {
             if (p.getUsername().equalsIgnoreCase(username)) {
@@ -74,13 +70,15 @@ public class OnlineStore {
         return null;
     }
 
-    public Customer createAccount(String name, String username, String password) {
+    public Customer createAccount(String name, String username, String password, Address address) {
+
         if (!usernameAvailable(username)) {
             System.out.println("This username is unavailable.");
             return null; 
         }
 
-        Customer c = new Customer(name, username, password, null, 0.0);
+        Customer c = new Customer(name, username, password, address, 0.09);
+
         users.add(c);
 
         System.out.println("Account created successfully.");

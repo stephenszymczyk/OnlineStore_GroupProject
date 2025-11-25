@@ -17,8 +17,10 @@ package org.onlinestore;
 import java.util.Scanner;
 import org.onlinestore.software.OnlineStore;
 import org.onlinestore.people.Manager;
+import org.onlinestore.people.Customer;
 import org.onlinestore.people.Person;
 import org.onlinestore.software.Item;
+import org.onlinestore.software.Address;
 
 public class Main {
 
@@ -60,8 +62,8 @@ public class Main {
                     }
                     else {
                         System.out.println("Customer login successful. Welcome " + loggedIn.getName() + ".");
-                        // Display customer home page options
-                        return;
+                        displayCustomerHomepage(scanner, (Customer) loggedIn, store);
+                        break;
                     }
 
                 case "2":
@@ -74,16 +76,25 @@ public class Main {
                     System.out.print("Choose a password: ");
                     String newPassword = scanner.nextLine();
 
-                    store.createAccount(name, newUsername, newPassword);
+                    System.out.println("\nEnter your shipping address:");
+                    System.out.print("Street Address: ");
+                    String street = scanner.nextLine();
+
+                    System.out.print("City: ");
+                    String city = scanner.nextLine();
+
+                    System.out.print("State: ");
+                    String state = scanner.nextLine();
+
+                    System.out.print("Zip Code: ");
+                    String zip = scanner.nextLine();
+
+
+                    Address address = new Address(street, city, state, zip);
+
+                    store.createAccount(name, newUsername, newPassword, address);
+
                     break;
-
-                case "3":
-                    System.out.println("Online store has been exited.");
-                    scanner.close();
-                    return;
-
-                default:
-                    System.out.println("Invalid entry.");
             }
         }
     }
@@ -189,6 +200,93 @@ public class Main {
 
                 default:
                     System.out.println("Invalid selection.");
+            }
+        }
+    }
+    
+    public static void displayCustomerHomepage(Scanner scanner, Customer customer, OnlineStore store) {
+
+        while (true) {
+            System.out.println("\nCustomer Home Page");
+            System.out.println("1. View Inventory");
+            System.out.println("2. Add Item to Cart");
+            System.out.println("3. View Cart");
+            System.out.println("4. Remove Item From Cart");
+            System.out.println("5. Cancel Transaction (Empty Cart)");
+            System.out.println("6. Checkout");
+            System.out.println("7. Logout");
+
+            System.out.print("Select an option: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+
+                case "1":
+                    store.getInventory().printInventory();
+                    break;
+
+                case "2":
+                    System.out.print("Enter item name: ");
+                    String itemName = scanner.nextLine();
+
+                    Item itemToAdd = store.getInventory().findItem(itemName);
+
+                    if (itemToAdd == null) {
+                        System.out.println("Item not found.");
+                        break;
+                    }
+
+                    System.out.print("Enter quantity: ");
+
+                    if(!scanner.hasNextInt()) {
+                        System.out.println("Invalid quantity.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int quantity = scanner.nextInt();
+                    scanner.nextLine();
+
+                    customer.getCart().addItems(itemToAdd, quantity);
+                    break;
+
+                case "3":
+                    System.out.println("\nItems currently in your cart:");
+                    for (Item i : customer.getCart().getItems()) {
+                        System.out.println(i.getName() + " - $" + i.getPrice());
+                    }
+                    break;
+
+                case "4":
+                    System.out.print("Enter item name: ");
+                    String removeName = scanner.nextLine();
+
+                    Item removeItem = store.getInventory().findItem(removeName);
+
+                    if (removeItem == null) {
+                        System.out.println("Item not found.");
+                        break;
+                    }
+
+                    customer.getCart().removeItem(removeItem);
+                    System.out.println("Item has been removed from your cart.");
+                    break;
+
+                case "5":
+                    customer.getCart().cancelTransaction(store.getInventory());
+                    System.out.println("Your cart has been emptied.");
+                    break;
+
+                case "6":
+                	customer.getCart().checkOut(scanner, store.getInventory());;
+                    break;
+
+                case "7":
+                    System.out.println("Logged out.");
+                    return;
+
+                default:
+                    System.out.println("Invalid entry.");
             }
         }
     }

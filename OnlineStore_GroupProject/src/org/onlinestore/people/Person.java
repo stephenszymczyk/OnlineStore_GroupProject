@@ -37,8 +37,4 @@ public class Person {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public void updatePassword(String newPassword, String confirmPassword) {
-        // LOGIC GOES HERE
-    }
 }
