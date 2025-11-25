@@ -16,7 +16,7 @@ public class OnlineStore {
         this.users = new ArrayList<>();
 
         // Default manager values
-        Manager defaultManager = new Manager("Lou Sassle", "manager", "ottertail", this);
+        Manager defaultManager = new Manager("Karl Schmidt", "manager", "ottertail", this);
         this.users.add(defaultManager);
 
         createDefaultItems();
@@ -24,9 +24,9 @@ public class OnlineStore {
     
     //default inventory items for testing methods
     private void createDefaultItems() {
-        inventory.addItem(new Item(9.99, "Mousepad", "Black felt mousepad", 60));
-        inventory.addItem(new Item(24.99, "Lamp", "Stainless steel 120V lamp", 20));
-        inventory.addItem(new Item(15.00, "Hat", "Brown baseball cap", 75));
+        inventory.addItem(new Item(399.99, "Binocular", "Vortex Diamondback 10x42 Binocular", 60));
+        inventory.addItem(new Item(49.95, "Restraining Tube", "24 inch venomous snake restraining tube", 20));
+        inventory.addItem(new Item(29.99, "Hydroflask", "40 oz hydroflask water bottle", 75));
     }
 
     public Inventory getInventory() {

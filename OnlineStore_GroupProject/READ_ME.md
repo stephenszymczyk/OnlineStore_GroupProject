@@ -25,5 +25,15 @@ Stephen's changes 11/24/25:
 	-Added menu items to accept customer's address at time of account creation.
 	-Added method DisplayCustomerHomepage().
 	
+	
+Stephen's changes 11/25/25:
+	-In Cart.java
+		-In removeItem() method:
+			-Fixed method to update inventory when item is removed from cart.
+	-In Main.java
+		-In displayCustomerHomepage() method:
+			-Change call for removeItem to accept Inventory parameter.
+	-Added new class Driver1.java for unit testing
+
 		
 	
