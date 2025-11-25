@@ -169,7 +169,7 @@ public class Driver1 {
             System.out.println("Login returned user: " + validLogin.getName());
         }
         else {
-            System.out.println("UNIT TESTING FAILURE");  //only prints of method fails unit testing
+            System.out.println("UNIT TESTING FAILURE");  //only prints if method fails unit testing
         }
 
         //test login method using an invalid username/password
@@ -181,7 +181,7 @@ public class Driver1 {
             System.out.println("Login returned user: null");
         }
         else {
-            System.out.println("UNIT TESTING FAILURE" + invalidLogin.getName()); //only prints of method fails unit testing
+            System.out.println("UNIT TESTING FAILURE" + invalidLogin.getName()); //only prints if method fails unit testing
         }
 
         //test getUsers() method
