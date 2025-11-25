@@ -45,10 +45,12 @@ public class Cart {
         //decrements quantity of item in inventory when customer adds items to cart
         item.setQuantity(item.getQuantity() - quantity);
     }
-
-    public void removeItem(Item item) {
-    	if (item != null){
+    
+    //items removed from cart get restored back to inventory
+    public void removeItem(Item item, Inventory inventory) {
+        if (item != null) {
             items.remove(item);
+            inventory.addItem(item);
         }
     }
 
@@ -61,11 +63,6 @@ public class Cart {
     	    inventory.addItem(item);
     	    items.remove(item);
     	}
-    }
-
-    public void putItemBack(Item item, Inventory inventory){
-        items.remove(item);
-        inventory.addItem(item);
     }
 
     public void checkOut(Scanner scanner, Inventory inventory) {

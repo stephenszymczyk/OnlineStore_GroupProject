@@ -110,16 +110,16 @@ public class Main {
             System.out.println("5. Logout");
 
             System.out.print("Select an option: ");
-            String choice = scanner.nextLine();
+            String managerInput = scanner.nextLine();
 
-            switch (choice) {
+            switch (managerInput) {
 
                 case "1":
                     manager.viewInventory();
                     break;
                 
 
-                case "2":  // FINISH ME: CREATE EXCEPTIONS FOR INVALID ENTRIES 
+                case "2": 
                     System.out.print("Enter item name: ");
                     String itemName = scanner.nextLine();
 
@@ -212,83 +212,77 @@ public class Main {
             System.out.println("2. Add Item to Cart");
             System.out.println("3. View Cart");
             System.out.println("4. Remove Item From Cart");
-            System.out.println("5. Cancel Transaction (Empty Cart)");
-            System.out.println("6. Checkout");
-            System.out.println("7. Logout");
+            System.out.println("5. Checkout");
+            System.out.println("6. Logout");
 
             System.out.print("Select an option: ");
-            String choice = scanner.nextLine();
+            String customerInput = scanner.nextLine();
 
-            switch (choice) {
+            switch (customerInput) {
 
-                case "1":
-                    store.getInventory().printInventory();
+            case "1":
+                store.getInventory().printInventory();
+                break;
+
+            case "2":
+                System.out.print("Enter item name: ");
+                String itemName = scanner.nextLine();
+
+                Item itemToAdd = store.getInventory().findItem(itemName);
+
+                if (itemToAdd == null) {
+                    System.out.println("Item not found.");
                     break;
+                }
 
-                case "2":
-                    System.out.print("Enter item name: ");
-                    String itemName = scanner.nextLine();
+                System.out.print("Enter quantity: ");
 
-                    Item itemToAdd = store.getInventory().findItem(itemName);
-
-                    if (itemToAdd == null) {
-                        System.out.println("Item not found.");
-                        break;
-                    }
-
-                    System.out.print("Enter quantity: ");
-
-                    if(!scanner.hasNextInt()) {
-                        System.out.println("Invalid quantity.");
-                        scanner.nextLine();
-                        break;
-                    }
-
-                    int quantity = scanner.nextInt();
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Invalid quantity.");
                     scanner.nextLine();
-
-                    customer.getCart().addItems(itemToAdd, quantity);
                     break;
+                }
 
-                case "3":
-                    System.out.println("\nItems currently in your cart:");
-                    for (Item i : customer.getCart().getItems()) {
-                        System.out.println(i.getName() + " - $" + i.getPrice());
-                    }
+                int quantity = scanner.nextInt();
+                scanner.nextLine();
+
+                customer.getCart().addItems(itemToAdd, quantity);
+                break;
+
+            case "3":
+                System.out.println("\nItems in cart:");
+                for (Item i : customer.getCart().getItems()) {
+                    System.out.println(i.getName() + " - $" + i.getPrice());
+                }
+                break;
+
+            case "4":
+                System.out.print("Enter item name: ");
+                String removeName = scanner.nextLine();
+
+                Item removeItem = store.getInventory().findItem(removeName);
+
+                if (removeItem == null) {
+                    System.out.println("Item not found.");
                     break;
+                }
 
-                case "4":
-                    System.out.print("Enter item name: ");
-                    String removeName = scanner.nextLine();
+                customer.getCart().removeItem(removeItem, store.getInventory());
 
-                    Item removeItem = store.getInventory().findItem(removeName);
+                System.out.println("Item has been removed from your cart.");
+                break;
 
-                    if (removeItem == null) {
-                        System.out.println("Item not found.");
-                        break;
-                    }
+            case "5":
+                customer.getCart().checkOut(scanner, store.getInventory());
+                break;
 
-                    customer.getCart().removeItem(removeItem);
-                    System.out.println("Item has been removed from your cart.");
-                    break;
+            case "6":
+                System.out.println("Logged out.");
+                return;
 
-                case "5":
-                    customer.getCart().cancelTransaction(store.getInventory());
-                    System.out.println("Your cart has been emptied.");
-                    break;
-
-                case "6":
-                	customer.getCart().checkOut(scanner, store.getInventory());;
-                    break;
-
-                case "7":
-                    System.out.println("Logged out.");
-                    return;
-
-                default:
-                    System.out.println("Invalid entry.");
+            default:
+                System.out.println("Invalid entry.");
             }
         }
     }
-
 }
