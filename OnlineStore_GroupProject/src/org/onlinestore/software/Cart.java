@@ -50,7 +50,9 @@ public class Cart {
     public void removeItem(Item item, Inventory inventory) {
         if (item != null) {
             items.remove(item);
-            inventory.addItem(item);
+
+            inventory.restoreItem(item); 
+
         }
     }
 
@@ -60,7 +62,9 @@ public class Cart {
     
     public void cancelTransaction(Inventory inventory) {
     	for (Item item : new ArrayList<>(items)) {
-    	    inventory.addItem(item);
+
+    	    inventory.restoreItem(item); 
+
     	    items.remove(item);
     	}
     }
@@ -179,6 +183,5 @@ public class Cart {
         items.clear();
     }
 }
-
 
 

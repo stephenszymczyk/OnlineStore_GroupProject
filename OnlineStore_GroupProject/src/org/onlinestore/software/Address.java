@@ -48,7 +48,4 @@ public class Address {
     	this.zipCode = zipCode; 
     }
 
-    public void updateAddress() {
-        // LOGIC GOES HERE
-    }
 }
