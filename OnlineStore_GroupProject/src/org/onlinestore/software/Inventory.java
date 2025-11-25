@@ -29,7 +29,7 @@ public class Inventory {
         Item itemExists = findItem(newItem.getName());
 
         if (itemExists != null) {
-        	itemExists.setQuantity(itemExists.getQuantity() + newItem.getQuantity());
+            itemExists.setQuantity(itemExists.getQuantity() + newItem.getQuantity());
         } 
         else {
             items.add(newItem);
@@ -53,6 +53,14 @@ public class Inventory {
             System.out.println("Quantity: " + item.getQuantity());
             System.out.println("Description: " + item.getDescription());
             System.out.println();
+        }
+    }
+
+    //Method added to fix bug found during module testing. Correctly restores items to inventory.
+    public void restoreItem(Item item) {
+        Item existing = findItem(item.getName());
+        if (existing != null) {
+            existing.setQuantity(existing.getQuantity() + 1);   // add only one back to quantity instead of entire quantity available
         }
     }
 }

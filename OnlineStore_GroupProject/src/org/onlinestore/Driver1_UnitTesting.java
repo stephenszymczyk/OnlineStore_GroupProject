@@ -4,7 +4,7 @@ import org.onlinestore.people.*;
 import org.onlinestore.software.*;
 import java.util.Scanner;
 
-public class Driver1 {
+public class Driver1_UnitTesting {
 
     public static void main(String[] args) {
 
@@ -58,10 +58,10 @@ public class Driver1 {
 
         //print updated address
         System.out.println("\nUpdated address:");
-        System.out.println("Street: " + address.getStreetAddress());
-        System.out.println("City: " + address.getCity());
-        System.out.println("State: " + address.getState());
-        System.out.println("Zip: " + address.getZipCode());
+        System.out.println("Updated Street: " + address.getStreetAddress());
+        System.out.println("Updated City: " + address.getCity());
+        System.out.println("Updated State: " + address.getState());
+        System.out.println("Updated Zip: " + address.getZipCode());
 
 
         /////////////////////////////////////////////
@@ -111,7 +111,7 @@ public class Driver1 {
         inventory.addItem(secondItem);
         inventory.addItem(thirdItem);
 
-        System.out.println("\nCurrent Inventory:");
+        System.out.println("\nCurrent Inventory (Should contain snake hook, hex gloves, and headlamp):");
         inventory.printInventory();
 
         //find item
@@ -121,7 +121,7 @@ public class Driver1 {
         //update quantity
         inventory.updateQuantity(foundGloves, 10);
 
-        System.out.println("\nUpdated Inventory:");
+        System.out.println("\nUpdated Inventory (Hex glove quantity should be 10 now):");
         inventory.printInventory();
 
         //remove item
