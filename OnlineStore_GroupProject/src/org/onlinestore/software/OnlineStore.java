@@ -1,13 +1,19 @@
 package org.onlinestore.software;
 
+import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import org.onlinestore.people.Customer;
 import org.onlinestore.people.Manager;
 import org.onlinestore.people.Person;
 
-public class OnlineStore {
+public class OnlineStore implements Serializable {
     
     //Inventory belongs to OnlineStore
+	private static final long serialVersionUID = 1L;
     private Inventory inventory;
     private ArrayList<Person> users;
 
@@ -25,7 +31,7 @@ public class OnlineStore {
     //default inventory items for testing methods
     private void createDefaultItems() {
         inventory.addItem(new Item(399.99, "Binocular", "Vortex Diamondback 10x42 Binocular", 60));
-        inventory.addItem(new Item(49.95, "Restraining Tube", "24 inch venomous snake restraining tube", 20));
+        inventory.addItem(new Item(49.95, "Backpack", "Black jansport backpack", 20));
         inventory.addItem(new Item(29.99, "Hydroflask", "40 oz hydroflask water bottle", 75));
     }
 
@@ -50,7 +56,8 @@ public class OnlineStore {
     public void addUser(Person person) {
         users.add(person);
     }
-
+    
+    //system checks if entered username is available
     public boolean usernameAvailable(String username) {
         for (Person p : users) {
             if (p.getUsername().equalsIgnoreCase(username)) {
@@ -59,7 +66,8 @@ public class OnlineStore {
         }
         return true; 
     }
-
+    
+    //system verifies that user log in credentials are correct
     public Person login(String username, String password) {
         for (Person p : users) {
             if (p.getUsername().equals(username) && p.getPassword().equals(password)) {
@@ -83,5 +91,26 @@ public class OnlineStore {
 
         System.out.println("Account created successfully.");
         return c;
+    }
+    
+    public void saveOnlineStore() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("OnlineStore.ser"))) {
+            out.writeObject(this);
+            System.out.println("Saved successfully");
+        } 
+        catch (Exception e) {
+            System.out.println("Save failed");
+            e.printStackTrace();
+        }
+    }
+    
+    public static OnlineStore loadOnlineStore() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("OnlineStore.ser"))) {
+            System.out.println("Loading");
+            return (OnlineStore) in.readObject();
+        } catch (Exception e) {
+            System.out.println("File not found");
+            return new OnlineStore();  
+        }
     }
 }

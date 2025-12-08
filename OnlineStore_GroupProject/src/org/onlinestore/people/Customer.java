@@ -1,18 +1,20 @@
 package org.onlinestore.people;
 
+import java.io.Serializable;
 import org.onlinestore.software.Address;
 import org.onlinestore.software.Cart;
 
-public class Customer extends Person {
+public class Customer extends Person implements Serializable {
 
     private Address address;     
-    private double taxRate = 0.09;
+    private double taxRate = 0.09; // default tax rate applied to all transactions at time of checkout
     private Cart cart;
 
     public Customer() {
         this.cart = new Cart(this);
     }
-
+    
+    //customer address information, to be collected during account creation, can be updated during checkout
     public Customer(String name, String username, String password, 
                     Address address, double taxRate) {
 

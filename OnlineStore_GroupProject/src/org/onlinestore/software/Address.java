@@ -1,6 +1,8 @@
 package org.onlinestore.software;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
 
     private String streetAddress;
     private String city;

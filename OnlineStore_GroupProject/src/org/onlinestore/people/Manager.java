@@ -1,9 +1,10 @@
 package org.onlinestore.people;
 
+import java.io.Serializable;
 import org.onlinestore.software.OnlineStore;
 import org.onlinestore.software.Item;
 
-public class Manager extends Person {
+public class Manager extends Person implements Serializable {
 	
     private OnlineStore store;
 
@@ -27,7 +28,4 @@ public class Manager extends Person {
         store.getInventory().removeItem(item);
     }
 
-    public void viewInventory() {
-        store.getInventory().printInventory();
-    }
 }

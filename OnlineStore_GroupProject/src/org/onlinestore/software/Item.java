@@ -1,6 +1,8 @@
 package org.onlinestore.software;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
 
     private double price;
     private String name;

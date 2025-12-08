@@ -1,8 +1,9 @@
 package org.onlinestore.software;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Inventory {
+public class Inventory implements Serializable {
 
     private ArrayList<Item> items = new ArrayList<>();
 
@@ -44,16 +45,6 @@ public class Inventory {
 
     public void removeItem(Item item) {
         items.remove(item);
-    }
-
-    public void printInventory() {
-        for (Item item : items) {
-            System.out.println("Name: " + item.getName());
-            System.out.println("Price: " + item.getPrice());
-            System.out.println("Quantity: " + item.getQuantity());
-            System.out.println("Description: " + item.getDescription());
-            System.out.println();
-        }
     }
 
     //Method added to fix bug found during module testing. Correctly restores items to inventory.
