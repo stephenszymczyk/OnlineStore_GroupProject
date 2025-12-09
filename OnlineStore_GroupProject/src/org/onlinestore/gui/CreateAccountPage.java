@@ -24,56 +24,79 @@ public class CreateAccountPage extends JPanel {
     // Creates the entire Create Account page GUI
     private void createGUI() {
 
-        // BorderLayout and apply theme background
         setLayout(new BorderLayout());
         setBackground(ThemeGUI.BACKGROUND_COLOR);
 
-        // Frame that contains all input fields for creating an account
-        JPanel fieldBox = HelperGUI.createFieldBox(7);
+        // Main panel with title
+        JPanel mainPanel = HelperFunctionsGUI.createSectionBox("Create Account");
 
-        // Creates text fields using theme
-        JTextField nameField = HelperGUI.createThemeTextField();
-        JTextField userField = HelperGUI.createThemeTextField();
-        JPasswordField passField = HelperGUI.createThemePasswordField();
-        JTextField streetField = HelperGUI.createThemeTextField();
-        JTextField cityField = HelperGUI.createThemeTextField();
-        JTextField stateField = HelperGUI.createThemeTextField();
-        JTextField zipField = HelperGUI.createThemeTextField();
+        // Input panel that holds all labeled fields
+        JPanel inputFieldPanel = HelperFunctionsGUI.createInputSection();
+        JTextField nameField = HelperFunctionsGUI.createThemeTextField();
+        JTextField userField = HelperFunctionsGUI.createThemeTextField();
+        JPasswordField passField = HelperFunctionsGUI.createThemePasswordField();
+        JTextField streetField = HelperFunctionsGUI.createThemeTextField();
+        JTextField cityField = HelperFunctionsGUI.createThemeTextField();
+        JTextField stateField = HelperFunctionsGUI.createThemeTextField();
+        JTextField zipField = HelperFunctionsGUI.createThemeTextField();
 
-        // Adds lables and input fields
-        fieldBox.add(HelperGUI.createFieldRow(HelperGUI.createFieldLabel("Name:"), nameField));
-        fieldBox.add(HelperGUI.createFieldRow(HelperGUI.createFieldLabel("Username:"), userField));
-        fieldBox.add(HelperGUI.createFieldRow(HelperGUI.createFieldLabel("Password:"), passField));
-        fieldBox.add(HelperGUI.createFieldRow(HelperGUI.createFieldLabel("Street:"), streetField));
-        fieldBox.add(HelperGUI.createFieldRow(HelperGUI.createFieldLabel("City:"), cityField));
-        fieldBox.add(HelperGUI.createFieldRow(HelperGUI.createFieldLabel("State:"), stateField));
-        fieldBox.add(HelperGUI.createFieldRow(HelperGUI.createFieldLabel("Zip:"), zipField));
+        // Uses all default field settings
+        HelperFunctionsGUI.fieldSettings(nameField);
+        HelperFunctionsGUI.fieldSettings(userField);
+        HelperFunctionsGUI.fieldSettings(passField);
+        HelperFunctionsGUI.fieldSettings(streetField);
+        HelperFunctionsGUI.fieldSettings(cityField);
+        HelperFunctionsGUI.fieldSettings(stateField);
+        HelperFunctionsGUI.fieldSettings(zipField);
 
-        // Centers all fields and adds title
-        JPanel finalLayout = HelperGUI.centerPanelWithTitle("Create Account", fieldBox);
-        add(finalLayout, BorderLayout.CENTER);
+        // Add labeled fields to panel
+        inputFieldPanel.add(HelperFunctionsGUI.fieldLayout("Name", nameField));
+        inputFieldPanel.add(Box.createVerticalStrut(10));
+        inputFieldPanel.add(HelperFunctionsGUI.fieldLayout("Username", userField));
+        inputFieldPanel.add(Box.createVerticalStrut(10));
+        inputFieldPanel.add(HelperFunctionsGUI.fieldLayout("Password", passField));
+        inputFieldPanel.add(Box.createVerticalStrut(10));
+        inputFieldPanel.add(HelperFunctionsGUI.fieldLayout("Street", streetField));
+        inputFieldPanel.add(Box.createVerticalStrut(10));
+        inputFieldPanel.add(HelperFunctionsGUI.fieldLayout("City", cityField));
+        inputFieldPanel.add(Box.createVerticalStrut(10));
+        inputFieldPanel.add(HelperFunctionsGUI.fieldLayout("State", stateField));
+        inputFieldPanel.add(Box.createVerticalStrut(10));
+        inputFieldPanel.add(HelperFunctionsGUI.fieldLayout("Zip", zipField));
+        inputFieldPanel.add(Box.createVerticalStrut(15));
 
-        // Initialize create account button and back button
-        JButton createBtn = HelperGUI.createThemeButton("Create Account");
-        JButton backBtn = HelperGUI.createThemeButton("Back");
+        mainPanel.add(inputFieldPanel);
 
-        // Row for create account button and back button
-        JPanel buttonRow = HelperGUI.createButtonRow(createBtn, backBtn);
+        // Center fields on panel
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerPanel.setOpaque(false);
+        centerPanel.add(mainPanel);
+
+        JScrollPane scroll = new JScrollPane(centerPanel);
+        scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(35);
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+
+        add(scroll, BorderLayout.CENTER);
+
+        // Buttons for create account and go back
+        JButton createBtn = HelperFunctionsGUI.createThemeButton("Create Account");
+        JButton backBtn = HelperFunctionsGUI.createThemeButton("Back");
+        JPanel buttonRow = HelperFunctionsGUI.createButtonRow(createBtn, backBtn);
         add(buttonRow, BorderLayout.SOUTH);
 
-        // Allows user to use enter key to move through fields
-        HelperGUI.enterKeyFields(
+        // Enables using enter key to move through fields
+        HelperFunctionsGUI.enterKeyFields(
                 nameField, userField, passField,
                 streetField, cityField, stateField, zipField
         );
 
-        // Allows user to submit account information using enter once they reach the final field
-        HelperGUI.enterKeySubmit(zipField, createBtn);
+        // Enables using enter key to submit account information when final field is reached 
+        HelperFunctionsGUI.enterKeySubmit(zipField, createBtn);
 
-        // Logic for when user selects Create Account button
+        // Logic used when Create Account button is selected
         createBtn.addActionListener(e -> {
-
-            // Gets user input from fields
             String name = nameField.getText().trim();
             String user = userField.getText().trim();
             String pass = new String(passField.getPassword()).trim();
@@ -83,25 +106,25 @@ public class CreateAccountPage extends JPanel {
             String zip = zipField.getText().trim();
 
             // Checks to make sure no fields are empty
-            if (HelperGUI.empty(name, user, pass, street, city, state, zip)) {
-                HelperGUI.error(parent, "Please fill out all fields.");
+            if (HelperFunctionsGUI.empty(name, user, pass, street, city, state, zip)) {
+                HelperFunctionsGUI.error(parent, "Please fill out all fields.");
                 return;
             }
 
-            // Creates an Address object from the entered address information
+            // Creates new address object using user's input
             Address addr = new Address(street, city, state, zip);
 
-            // Requests OnlineStore to create a new customer account
+            // OnlineStore creates new customer account
             Customer newCustomer = store.createAccount(name, user, pass, addr);
 
             // Error message if the username is unavailable
             if (newCustomer == null) {
-                HelperGUI.error(parent, "Username is unavailable.");
+                HelperFunctionsGUI.error(parent, "Username is unavailable.");
                 return;
             }
 
             // Displays account creation confirmation message and returns to home page
-            HelperGUI.information(parent, "Account successfully created.");
+            HelperFunctionsGUI.information(parent, "Account successfully created.");
             parent.loadHomePage();
         });
 

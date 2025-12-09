@@ -32,7 +32,7 @@ public class Order implements Serializable {
         this.state = customer.getAddress().getState();
         this.zipCode = customer.getAddress().getZipCode();
 
-        // Generates unique 8-digit order confirmation number using timestamp
+        // Generates unique order confirmation number using timestamp
         long millisecondsSince = System.currentTimeMillis();
         String millisecondsString = Long.toString(millisecondsSince);
         this.confirmationNumber = millisecondsString.substring(millisecondsString.length() - 8);

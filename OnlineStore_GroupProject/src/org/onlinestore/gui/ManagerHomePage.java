@@ -19,70 +19,74 @@ public class ManagerHomePage extends JPanel {
 
     // Constructor that initializes the page with the main window, store data, and manager
     public ManagerHomePage(MainHomePage parent, OnlineStore store, Manager manager) {
-        this.parent = parent;     // Represents MainHomePage window
-        this.store = store;       // Represents instance of OnlineStore
-        this.manager = manager;   
-        createGUI();               
+        this.parent = parent;    
+        this.store = store;      
+        this.manager = manager;  
+        createGUI();              
     }
 
-    // Creates the entire Manager Inventory page GUI
+    // Creates the entire Manager Home Page GUI
     private void createGUI() {
 
-        // BorderLayout and apply theme background
         setLayout(new BorderLayout());
         setBackground(ThemeGUI.BACKGROUND_COLOR);
 
-        // Frame that contains all manager menu buttons
-        JPanel box = new JPanel();
-        box.setPreferredSize(new Dimension(400, 260));
-        box.setBackground(ThemeGUI.PANEL_COLOR);
-        box.setBorder(BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR));
-        box.setLayout(new GridLayout(5, 1, 15, 15));
-        box.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
-
-        // Title displayed at the top of the manager menu box
-        JLabel title = new JLabel("Manager Home", SwingConstants.CENTER);
+        // Title at the top
+        JLabel title = new JLabel("Manager Home Page", SwingConstants.CENTER);
         title.setFont(ThemeGUI.SUBTITLE_FONT);
         title.setForeground(ThemeGUI.TEXT_MAIN);
+        title.setBorder(BorderFactory.createEmptyBorder(30, 0, 30, 0));
+        add(title, BorderLayout.NORTH);
 
-        // Creates theme buttons for manager actions
-        JButton viewInventoryBtn = HelperGUI.createThemeButton("View Inventory");
-        JButton addItemBtn = HelperGUI.createThemeButton("Add Item");
-        JButton logoutBtn = HelperGUI.createThemeButton("Logout");
+        // Button panel
+        JPanel btnPanel = new JPanel();
+        btnPanel.setOpaque(false);
+        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
 
-        // Opens manager's inventory perspective when View Inventory button is selected
-        viewInventoryBtn.addActionListener(e ->
-                parent.showManagerInventoryPage(manager)
-        );
+        JButton viewInventoryBtn = HelperFunctionsGUI.createThemeButton("View Inventory");
+        JButton addItemBtn = HelperFunctionsGUI.createThemeButton("Add Item");
+        JButton viewOrdersBtn = HelperFunctionsGUI.createThemeButton("View Orders");
+        JButton logoutBtn = HelperFunctionsGUI.createThemeButton("Logout");
 
-        // Opens Add Item page when Add Item button is selected
+        int width = 230;
+        Dimension btnDimension = new Dimension(width, 35);
+
+        viewInventoryBtn.setMaximumSize(btnDimension);
+        addItemBtn.setMaximumSize(btnDimension);
+        viewOrdersBtn.setMaximumSize(btnDimension);
+        logoutBtn.setMaximumSize(btnDimension);
+        viewInventoryBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addItemBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewOrdersBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        logoutBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        btnPanel.add(viewInventoryBtn);
+        btnPanel.add(Box.createVerticalStrut(15));
+        btnPanel.add(addItemBtn);
+        btnPanel.add(Box.createVerticalStrut(15));
+        btnPanel.add(viewOrdersBtn);
+        btnPanel.add(Box.createVerticalStrut(15));
+        btnPanel.add(logoutBtn);
+
+        add(HelperFunctionsGUI.centerThePanel(btnPanel), BorderLayout.CENTER);
+
+        // Button actions
+        viewInventoryBtn.addActionListener(e -> parent.showManagerInventoryPage(manager));
+
         addItemBtn.addActionListener(e -> {
             parent.setContentPane(new AddItemPage());
             parent.revalidate();
             parent.repaint();
         });
-        
-        JButton viewOrdersBtn = HelperGUI.createThemeButton("View Orders");
+
         viewOrdersBtn.addActionListener(e -> {
             parent.setContentPane(new ManagerOrderHistoryPage(parent, store, manager));
             parent.revalidate();
             parent.repaint();
         });
 
-        // Returns user to main home page when Logout is selected
         logoutBtn.addActionListener(e -> parent.loadHomePage());
-
-        // Adds title and menu buttons to display frame
-        box.add(title);
-        box.add(viewInventoryBtn);
-        box.add(addItemBtn);
-        box.add(viewOrdersBtn); 
-        box.add(logoutBtn);
-
-        // Centers the manager menu in the window
-        add(HelperGUI.centered(box), BorderLayout.CENTER);
     }
-
 
     // Inner class to initialize the Add Item page within the Manager Home Page
     private class AddItemPage extends JPanel {
@@ -90,95 +94,107 @@ public class ManagerHomePage extends JPanel {
         // Constructor for the Add Item Page GUI
         public AddItemPage() {
 
-            // BorderLayout and apply theme background
             setLayout(new BorderLayout());
             setBackground(ThemeGUI.BACKGROUND_COLOR);
 
-            // Frame that contains all input fields for adding a new item
-            JPanel fieldBox = HelperGUI.createFieldBox(4);
+            // Main container for input fields
+            JPanel container = new JPanel();
+            container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+            container.setOpaque(false);
 
-            // Creates theme input fields
-            JTextField nameField = HelperGUI.createThemeTextField();
-            JTextField priceField = HelperGUI.createThemeTextField();
-            JTextField descField = HelperGUI.createThemeTextField();
-            JTextField qtyField = HelperGUI.createThemeTextField();
+            JLabel title = new JLabel("Add New Item", SwingConstants.LEFT);
+            title.setFont(ThemeGUI.SUBTITLE_FONT);
+            title.setForeground(ThemeGUI.TEXT_MAIN);
+            title.setAlignmentX(Component.LEFT_ALIGNMENT);
+            title.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
-            // Adds each label and matching input field into the form container
-            fieldBox.add(HelperGUI.createFieldRow(
-                    HelperGUI.createFieldLabel("Name:"), nameField
-            ));
-            fieldBox.add(HelperGUI.createFieldRow(
-                    HelperGUI.createFieldLabel("Price:"), priceField
-            ));
-            fieldBox.add(HelperGUI.createFieldRow(
-                    HelperGUI.createFieldLabel("Description:"), descField
-            ));
-            fieldBox.add(HelperGUI.createFieldRow(
-                    HelperGUI.createFieldLabel("Quantity:"), qtyField
-            ));
+            container.add(title);
 
-            // Centers fields and adds title for the Add Item page
-            JPanel finalLayout = HelperGUI.centerPanelWithTitle("Add New Item", fieldBox);
-            add(finalLayout, BorderLayout.CENTER);
+            JPanel input = new JPanel();
+            input.setLayout(new BoxLayout(input, BoxLayout.Y_AXIS));
+            input.setOpaque(false);
 
-            // Creates theme Add Item and Back buttons
-            JButton addBtn = HelperGUI.createThemeButton("Add Item");
-            JButton backBtn = HelperGUI.createThemeButton("Back");
+            int fieldWidth = 280;
+            Dimension fieldSize = new Dimension(fieldWidth, 34);
+            JTextField nameField = HelperFunctionsGUI.createThemeTextField();
+            JTextField priceField = HelperFunctionsGUI.createThemeTextField();
+            JTextField descField = HelperFunctionsGUI.createThemeTextField();
+            JTextField qtyField = HelperFunctionsGUI.createThemeTextField();
 
-            // Row for Add Item and Back buttons
-            JPanel buttonRow = HelperGUI.createButtonRow(addBtn, backBtn);
+            nameField.setMaximumSize(fieldSize);
+            priceField.setMaximumSize(fieldSize);
+            descField.setMaximumSize(fieldSize);
+            qtyField.setMaximumSize(fieldSize);
+
+            input.add(HelperFunctionsGUI.fieldLayout("Name", nameField));
+            input.add(Box.createVerticalStrut(12));
+            input.add(HelperFunctionsGUI.fieldLayout("Price", priceField));
+            input.add(Box.createVerticalStrut(12));
+            input.add(HelperFunctionsGUI.fieldLayout("Description", descField));
+            input.add(Box.createVerticalStrut(12));
+            input.add(HelperFunctionsGUI.fieldLayout("Quantity", qtyField));
+            input.add(Box.createVerticalStrut(20));
+            container.add(input);
+
+            // Scrollable container panel
+            JPanel containerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            containerPanel.setOpaque(false);
+            containerPanel.add(container);
+
+            JScrollPane scroll = new JScrollPane(containerPanel);
+            scroll.setBorder(null);
+            scroll.setOpaque(false);
+            scroll.getViewport().setOpaque(false);
+            scroll.getVerticalScrollBar().setUnitIncrement(22);
+
+            add(scroll, BorderLayout.CENTER);
+
+            // Creates themed buttons
+            JButton addBtn = HelperFunctionsGUI.createThemeButton("Add Item");
+            JButton backBtn = HelperFunctionsGUI.createThemeButton("Back");
+            JPanel buttonRow = HelperFunctionsGUI.createButtonRow(addBtn, backBtn);
             add(buttonRow, BorderLayout.SOUTH);
 
-            // Allows user to use enter key to move through input fields
-            HelperGUI.enterKeyFields(nameField, priceField, descField, qtyField);
+            // Lets user move through fields using enter key and submit using enter key once on the last field
+            HelperFunctionsGUI.enterKeyFields(nameField, priceField, descField, qtyField);
+            HelperFunctionsGUI.enterKeySubmit(qtyField, addBtn);
 
-            // Allows user to submit new item's attributes using enter once they reach the final field
-            HelperGUI.enterKeySubmit(qtyField, addBtn);
-
-            // Logic for when user selects Add Item button
+            // Logic for adding items 
             addBtn.addActionListener(e -> {
 
-                // Gets user input from item attribute fields
                 String name = nameField.getText().trim();
                 String price = priceField.getText().trim();
                 String desc = descField.getText().trim();
                 String qty = qtyField.getText().trim();
 
-                // Checks to make sure fields are not empty
-                if (HelperGUI.empty(name, price, desc, qty)) {
-                    HelperGUI.error(parent, "All fields must be filled.");
+                if (HelperFunctionsGUI.empty(name, price, desc, qty)) {
+                    HelperFunctionsGUI.error(parent, "All fields must be filled.");
                     return;
                 }
 
-                // Converts the price from text into a double and checks that the value is not negative
                 double p;
                 try {
                     p = Double.parseDouble(price);
                     if (p < 0) throw new Exception();
-                } catch (Exception ex) {
-                    HelperGUI.error(parent, "Invalid entry. Please enter a positive value for price.");
+                } catch (Exception exceptionCall) {
+                    HelperFunctionsGUI.error(parent, "Invalid entry. Please enter a positive value for price.");
                     return;
                 }
 
-                // Checks that user inputs a non-negative number for item quantity
-                if (!HelperGUI.positiveIntegerCheck(qty)) {
-                    HelperGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
+                if (!HelperFunctionsGUI.positiveIntegerCheck(qty)) {
+                    HelperFunctionsGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
                     return;
                 }
 
                 int q = Integer.parseInt(qty);
-
-                // Creates new item and adds it to inventory
                 Item newItem = new Item(p, name, desc, q);
                 store.getInventory().addItem(newItem);
                 store.saveOnlineStore();
 
-                // Displays confirmation message and returns to manager home page
-                HelperGUI.information(parent, "Item added successfully.");
+                HelperFunctionsGUI.information(parent, "Item added successfully.");
                 parent.showManagerHome(manager);
             });
 
-            // Returns user to manager home page when Back is selected
             backBtn.addActionListener(e -> parent.showManagerHome(manager));
         }
     }

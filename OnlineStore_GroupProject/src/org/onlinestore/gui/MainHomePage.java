@@ -19,7 +19,6 @@ public class MainHomePage extends JFrame {
         setSize(600, 500);                               // Main window size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Close window
         setLocationRelativeTo(null);                     // Centers window on users screen
-
         setBackground(ThemeGUI.BACKGROUND_COLOR);                     
         getContentPane().setBackground(ThemeGUI.BACKGROUND_COLOR);   
         getRootPane().setBackground(ThemeGUI.BACKGROUND_COLOR);       
@@ -57,12 +56,12 @@ public class MainHomePage extends JFrame {
 
         // Online store icon
         ImageIcon bannerIcon = new ImageIcon(getClass().getResource("/UAlogo.png"));
-        Image scaledImg = bannerIcon.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
-        bannerIcon = new ImageIcon(scaledImg);
+        Image imageSizing = bannerIcon.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
+        bannerIcon = new ImageIcon(imageSizing);
 
-        JLabel imageBanner = new JLabel(bannerIcon);
-        imageBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
-        imageBanner.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        JLabel mainImage = new JLabel(bannerIcon);
+        mainImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainImage.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
         // Button frame for main panel options
         JPanel box = new JPanel();
@@ -70,8 +69,8 @@ public class MainHomePage extends JFrame {
         box.setPreferredSize(new Dimension(250, 120));
         box.setOpaque(false); 
 
-        JButton loginBtn = HelperGUI.createThemeButton("Login");
-        JButton createAccountBtn = HelperGUI.createThemeButton("Create Account");
+        JButton loginBtn = HelperFunctionsGUI.createThemeButton("Login");
+        JButton createAccountBtn = HelperFunctionsGUI.createThemeButton("Create Account");
 
         box.add(loginBtn);
         box.add(createAccountBtn);
@@ -85,7 +84,7 @@ public class MainHomePage extends JFrame {
         // Adds everything to main panel
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(textBanner);
-        mainPanel.add(imageBanner);
+        mainPanel.add(mainImage);
         mainPanel.add(buttonCenter);
         mainPanel.add(Box.createVerticalGlue());
 
@@ -101,7 +100,7 @@ public class MainHomePage extends JFrame {
 
     // Open login page
     private void openLoginPage() {
-        setContentPane(new LoginPage(this, store)); // this = MainHomePage frame
+        setContentPane(new LoginPage(this, store));
         revalidate();
         repaint();
     }

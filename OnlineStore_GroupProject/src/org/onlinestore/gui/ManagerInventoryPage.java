@@ -37,7 +37,6 @@ public class ManagerInventoryPage extends JPanel {
         title.setFont(ThemeGUI.SUBTITLE_FONT);
         title.setForeground(ThemeGUI.TEXT_MAIN);
         title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
         add(title, BorderLayout.NORTH);
 
         // Panel that contains the display for inventory items and their attributes
@@ -60,7 +59,7 @@ public class ManagerInventoryPage extends JPanel {
         add(scroll, BorderLayout.CENTER);
 
         // Back button that returns manager to the Manager Home page
-        JButton backBtn = HelperGUI.createThemeButton("Back");
+        JButton backBtn = HelperFunctionsGUI.createThemeButton("Back");
         backBtn.addActionListener(e -> parent.showManagerHome(manager));
 
         // Panel used to center the Back button at the bottom of the page
@@ -99,11 +98,11 @@ public class ManagerInventoryPage extends JPanel {
         JPanel buttonRow = new JPanel(new FlowLayout());
         buttonRow.setOpaque(false);
 
-        JButton editNameBtn = HelperGUI.createThemeButton("Edit Name");
-        JButton editPriceBtn = HelperGUI.createThemeButton("Edit Price");
-        JButton editDescBtn = HelperGUI.createThemeButton("Edit Description");
-        JButton editQtyBtn = HelperGUI.createThemeButton("Edit Quantity");
-        JButton removeBtn = HelperGUI.createThemeButton("Remove Item");
+        JButton editNameBtn = HelperFunctionsGUI.createThemeButton("Edit Name");
+        JButton editPriceBtn = HelperFunctionsGUI.createThemeButton("Edit Price");
+        JButton editDescBtn = HelperFunctionsGUI.createThemeButton("Edit Description");
+        JButton editQtyBtn = HelperFunctionsGUI.createThemeButton("Edit Quantity");
+        JButton removeBtn = HelperFunctionsGUI.createThemeButton("Remove Item");
 
         // Pop-up boxes for editing item attributes
         editNameBtn.addActionListener(e -> editNamePopUp(item));
@@ -113,9 +112,10 @@ public class ManagerInventoryPage extends JPanel {
 
         // Confirmation display and removes item after manager confirms they want to delete it
         removeBtn.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(
-                    parent,
-                    "Do you want to remove '" + item.getName() + "' from inventory?",
+            int confirm = JOptionPane.showConfirmDialog(parent,
+                    "Do you want to remove '" 
+                    + item.getName() 
+                    + "' from inventory?",
                     "Confirm",
                     JOptionPane.YES_NO_OPTION
             );
@@ -133,7 +133,6 @@ public class ManagerInventoryPage extends JPanel {
         buttonRow.add(editDescBtn);
         buttonRow.add(editQtyBtn);
         buttonRow.add(removeBtn);
-
         itemDisplay.add(buttonRow, BorderLayout.SOUTH);
 
         return itemDisplay;
@@ -150,8 +149,8 @@ public class ManagerInventoryPage extends JPanel {
 
         if (userSelection == JOptionPane.OK_OPTION) {
             String text = field.getText().trim();
-            if (HelperGUI.empty(text)) {
-                HelperGUI.error(parent, "Field cannot be empty.");
+            if (HelperFunctionsGUI.empty(text)) {
+                HelperFunctionsGUI.error(parent, "Field cannot be empty.");
                 return;
             }
             item.setName(text);
@@ -177,7 +176,7 @@ public class ManagerInventoryPage extends JPanel {
                 store.saveOnlineStore();
                 refreshPage();
             } catch (Exception e) {
-                HelperGUI.error(parent, "Invalid entry. Please enter a positive value for price.");
+                HelperFunctionsGUI.error(parent, "Invalid entry. Please enter a positive value for price.");
             }
         }
     }
@@ -193,8 +192,8 @@ public class ManagerInventoryPage extends JPanel {
 
         if (userSelection == JOptionPane.OK_OPTION) {
             String text = field.getText().trim();
-            if (HelperGUI.empty(text)) {
-                HelperGUI.error(parent, "Field cannot be empty.");
+            if (HelperFunctionsGUI.empty(text)) {
+                HelperFunctionsGUI.error(parent, "Field cannot be empty.");
                 return;
             }
             item.setDescription(text);
@@ -214,8 +213,8 @@ public class ManagerInventoryPage extends JPanel {
 
         if (userSelection == JOptionPane.OK_OPTION) {
             String text = field.getText().trim();
-            if (!HelperGUI.positiveIntegerCheck(text)) {
-                HelperGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
+            if (!HelperFunctionsGUI.positiveIntegerCheck(text)) {
+                HelperFunctionsGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
                 return;
             }
             item.setQuantity(Integer.parseInt(text));

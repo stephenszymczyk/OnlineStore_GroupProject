@@ -54,12 +54,11 @@ public class CustomerInventoryPage extends JPanel {
         JScrollPane scroll = new JScrollPane(itemListPanel);
         scroll.getViewport().setBackground(ThemeGUI.BACKGROUND_COLOR);
         scroll.setBorder(null);
-        scroll.getVerticalScrollBar().setUnitIncrement(40); 
-
+        scroll.getVerticalScrollBar().setUnitIncrement(35); 
         add(scroll, BorderLayout.CENTER);
 
         // Back button returns customer to the Customer Home Page
-        JButton backBtn = HelperGUI.createThemeButton("Back");
+        JButton backBtn = HelperFunctionsGUI.createThemeButton("Back");
         backBtn.addActionListener(e -> parent.showCustomerHome(customer));
         
         // Panel used to center the Back button at the bottom of the page
@@ -80,8 +79,8 @@ public class CustomerInventoryPage extends JPanel {
         itemDisplay.setPreferredSize(new Dimension(500, 160));
 
         // Text for all of item's attributes
-        JTextArea itemAttributes = new JTextArea(
-                item.getName() + "\n" +
+        JTextArea itemAttributes = new JTextArea(item.getName() 
+        		+ "\n" +
                 "Price: $" + item.getPrice() + "\n" +
                 "Description: " + item.getDescription() + "\n" +
                 "Quantity in Stock: " + item.getQuantity()
@@ -97,7 +96,7 @@ public class CustomerInventoryPage extends JPanel {
         JPanel buttonRow = new JPanel(new FlowLayout());
         buttonRow.setOpaque(false);
 
-        JButton addToCartBtn = HelperGUI.createThemeButton("Add to Cart");
+        JButton addToCartBtn = HelperFunctionsGUI.createThemeButton("Add to Cart");
         addToCartBtn.addActionListener(e -> itemQuantityPopUp(item));
 
         buttonRow.add(addToCartBtn);
@@ -109,7 +108,7 @@ public class CustomerInventoryPage extends JPanel {
     // Pop-up box for customer to select quantity of item they want to add to their cart
     private void itemQuantityPopUp(Item item) {
 
-        JTextField qtyField = new JTextField("1");
+        JTextField qtyField = new JTextField("1"); // Default quantity for quantity field set to 1
 
         JPanel panel = new JPanel(new GridLayout(2, 1));
         panel.setOpaque(false);
@@ -117,10 +116,7 @@ public class CustomerInventoryPage extends JPanel {
         panel.add(qtyField);
 
         // Customer selects OK to confirm new quantity or cancel to go back
-        int userSelection = JOptionPane.showConfirmDialog(
-                parent,
-                panel,
-                "Add to Cart",
+        int userSelection = JOptionPane.showConfirmDialog(parent, panel, "Add to Cart",
                 JOptionPane.OK_CANCEL_OPTION
         );
 
@@ -129,8 +125,8 @@ public class CustomerInventoryPage extends JPanel {
             String text = qtyField.getText().trim();
 
             // Checks for valid quantity input
-            if (!HelperGUI.positiveIntegerCheck(text)) {
-                HelperGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
+            if (!HelperFunctionsGUI.positiveIntegerCheck(text)) {
+                HelperFunctionsGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
                 return;
             }
 
@@ -138,20 +134,20 @@ public class CustomerInventoryPage extends JPanel {
 
             // Checks that quantity has a value of at least one.
             if (qty <= 0) {
-                HelperGUI.error(parent, "Invalid entry. Quantity cannot be zero.");
+                HelperFunctionsGUI.error(parent, "Invalid entry. Quantity cannot be zero.");
                 return;
             }
 
             // Checks if desired quantity is available and displays message if not
             if (qty > item.getQuantity()) {
-                HelperGUI.error(parent, "We're sorry. There is not enough quantity in inventory.");
+                HelperFunctionsGUI.error(parent, "We're sorry. There is not enough quantity in inventory.");
                 return;
             }
 
             // Adds entered quantity of item to customer's cart
             customer.getCart().addItems(item, qty);
 
-            HelperGUI.information(parent, "Item added to Cart.");
+            HelperFunctionsGUI.information(parent, "Item added to Cart.");
 
             // Refreshes the page so updated stock displays immediately
             parent.setContentPane(new CustomerInventoryPage(parent, store, customer));

@@ -75,18 +75,16 @@ public class ManagerOrderHistoryPage extends JPanel {
         }
 
         // Back button returns manager to Manager Home Page
-        JButton backBtn = HelperGUI.createThemeButton("Back");
+        JButton backBtn = HelperFunctionsGUI.createThemeButton("Back");
         backBtn.addActionListener(e -> parent.showManagerHome(manager));
 
         JPanel bottom = new JPanel();
         bottom.setBackground(ThemeGUI.BACKGROUND_COLOR);
         bottom.add(backBtn);
-
         add(bottom, BorderLayout.SOUTH);
     }
 
     // Creates a panel displaying order information
- // Creates a panel displaying order information
     private JPanel createOrderDisplay(Order order) {
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -95,37 +93,25 @@ public class ManagerOrderHistoryPage extends JPanel {
 
         // Formats date and time of order
         DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
         StringBuilder stringBuilder = new StringBuilder();
 
-        // Adds order number
+        // Formats block for each order in manager view order display
         stringBuilder.append("Order Number: ").append(order.getConfirmationNumber()).append("\n");
-
-        // Adds customer's name
         stringBuilder.append("Customer: ").append(order.getCustomer().getName()).append("\n");
-
-        // Adds date and time that the order was placed
         stringBuilder.append("Date: ").append(order.getOrderDate().format(dateTimeFormat)).append("\n");
-
-        // Adds total cost of the order
-        stringBuilder.append("Total Cost: $")
-                     .append(String.format("%.2f", order.getTotalCost())).append("\n");
-
-        // Adds the saved shipping address
+        stringBuilder.append("Total Cost: $").append(String.format("%.2f", order.getTotalCost())).append("\n");
         stringBuilder.append("Shipping Address:\n");
         stringBuilder.append("   ").append(order.getStreetAddress()).append("\n");
-        stringBuilder.append("   ").append(order.getCity())
-                     .append(", ").append(order.getState())
-                     .append(" ").append(order.getZipCode()).append("\n");
-
+        stringBuilder.append("   ").append(order.getCity()).append(", ").append(order.getState())
+            .append(" ").append(order.getZipCode()).append("\n");
         stringBuilder.append("\nItems Ordered:\n");
 
         // Lists each item and quantity purchased
-        order.getItemsPurchased().forEach((item, qty) -> {
-            stringBuilder.append(" - ")
-              .append(item.getName())
-              .append(" (x").append(qty).append(")\n");
-        });
+        for (var itemRecord : order.getItemsPurchased().entrySet()) {
+            var item = itemRecord.getKey();
+            var qty = itemRecord.getValue();
+            stringBuilder.append(" - " + item.getName() + " (x" + qty + ")\n");
+        }
 
         JTextArea area = new JTextArea(stringBuilder.toString());
         area.setLineWrap(true);
@@ -134,7 +120,6 @@ public class ManagerOrderHistoryPage extends JPanel {
         area.setBackground(ThemeGUI.PANEL_COLOR);
         area.setForeground(ThemeGUI.TEXT_MAIN);
         area.setFont(ThemeGUI.SCROLL_FONT);
-
         panel.add(area, BorderLayout.CENTER);
 
         return panel;

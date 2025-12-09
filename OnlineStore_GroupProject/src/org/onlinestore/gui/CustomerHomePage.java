@@ -47,13 +47,12 @@ public class CustomerHomePage extends JPanel {
         title.setForeground(ThemeGUI.TEXT_MAIN);
 
         // Creates theme buttons for customer actions
-        JButton viewInventoryBtn = HelperGUI.createThemeButton("View Inventory");
-        JButton viewCartBtn = HelperGUI.createThemeButton("View Cart");
-        JButton logoutBtn = HelperGUI.createThemeButton("Logout");
+        JButton viewInventoryBtn = HelperFunctionsGUI.createThemeButton("View Inventory");
+        JButton viewCartBtn = HelperFunctionsGUI.createThemeButton("View Cart");
+        JButton logoutBtn = HelperFunctionsGUI.createThemeButton("Logout");
 
         // Opens customer inventory page when View Inventory is selected
-        viewInventoryBtn.addActionListener(e ->
-                parent.showCustomerInventoryPage(customer)
+        viewInventoryBtn.addActionListener(e -> parent.showCustomerInventoryPage(customer)
         );
 
         // Opens the cart display when View Cart is selected
@@ -64,8 +63,7 @@ public class CustomerHomePage extends JPanel {
         });
 
         // Returns user to main home page when Logout is selected
-        logoutBtn.addActionListener(e ->
-                parent.loadHomePage()
+        logoutBtn.addActionListener(e -> parent.loadHomePage()
         );
 
         // Adds title and menu buttons to display frame
@@ -75,22 +73,22 @@ public class CustomerHomePage extends JPanel {
         box.add(logoutBtn);
 
         // Centers the customer menu in the window
-        add(HelperGUI.centered(box), BorderLayout.CENTER);
+        add(HelperFunctionsGUI.centerThePanel(box), BorderLayout.CENTER);
     }
 
     // Creates customer's Cart page
     private JPanel createCartPage() {
 
         // BorderLayout and apply theme background
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(ThemeGUI.BACKGROUND_COLOR);
+        JPanel cartPanel = new JPanel(new BorderLayout());
+        cartPanel.setBackground(ThemeGUI.BACKGROUND_COLOR);
 
         // Title displayed at top of cart page
         JLabel title = new JLabel("Your Cart", SwingConstants.CENTER);
         title.setFont(ThemeGUI.SUBTITLE_FONT);
         title.setForeground(ThemeGUI.TEXT_MAIN);
         title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-        panel.add(title, BorderLayout.NORTH);
+        cartPanel.add(title, BorderLayout.NORTH);
 
         // Panel that contains the display for the cart items
         JPanel cartItemDisplay = new JPanel();
@@ -100,24 +98,23 @@ public class CustomerHomePage extends JPanel {
         // Displays message if customer's cart is empty
         if (customer.getCart().getItems().isEmpty()) {
 
-            JLabel emptyCartLabel = new JLabel("Your cart is currently empty.", SwingConstants.CENTER);
-            emptyCartLabel.setForeground(ThemeGUI.TEXT_MAIN);
-            emptyCartLabel.setFont(ThemeGUI.REGULAR_FONT);
+            JLabel defaultCartLabel = new JLabel("Your cart is currently empty.", SwingConstants.CENTER);
+            defaultCartLabel.setForeground(ThemeGUI.TEXT_MAIN);
+            defaultCartLabel.setFont(ThemeGUI.REGULAR_FONT);
 
-            JPanel centered = new JPanel(new GridBagLayout());
-            centered.setBackground(ThemeGUI.BACKGROUND_COLOR);
-            centered.add(emptyCartLabel);
+            JPanel panelCentering = new JPanel(new GridBagLayout());
+            panelCentering.setBackground(ThemeGUI.BACKGROUND_COLOR);
+            panelCentering.add(defaultCartLabel);
 
-            panel.add(centered, BorderLayout.CENTER);
+            cartPanel.add(panelCentering, BorderLayout.CENTER);
 
         }
         else {
 
         	// Gets each item in the cart only once, even if the customer added the same item multiple times
-            for (Map.Entry<Item, Integer> entry : customer.getCart().getItemsGrouped().entrySet()) {
+            for (Map.Entry<Item, Integer> listedCartItem : customer.getCart().getItemsGrouped().entrySet()) {
 
-                Item item = entry.getKey();
-
+                Item item = listedCartItem.getKey();
                 cartItemDisplay.add(createCartItemDisplay(item));
                 cartItemDisplay.add(Box.createVerticalStrut(10));
             }
@@ -126,13 +123,13 @@ public class CustomerHomePage extends JPanel {
             JScrollPane scroll = new JScrollPane(cartItemDisplay);
             scroll.setBorder(null);
             scroll.getViewport().setBackground(ThemeGUI.BACKGROUND_COLOR);
-            panel.add(scroll, BorderLayout.CENTER);
-            scroll.getVerticalScrollBar().setUnitIncrement(40);
+            cartPanel.add(scroll, BorderLayout.CENTER);
+            scroll.getVerticalScrollBar().setUnitIncrement(45);
         }
 
         // Back button for returning to customer home page and checkout button
-        JButton backBtn = HelperGUI.createThemeButton("Back");
-        JButton checkoutBtn = HelperGUI.createThemeButton("Checkout");
+        JButton backBtn = HelperFunctionsGUI.createThemeButton("Back");
+        JButton checkoutBtn = HelperFunctionsGUI.createThemeButton("Checkout");
 
         // Returns user to customer home page
         backBtn.addActionListener(e -> {
@@ -148,14 +145,13 @@ public class CustomerHomePage extends JPanel {
             parent.repaint();
         });
 
-        JPanel bottom = new JPanel();
-        bottom.setBackground(ThemeGUI.BACKGROUND_COLOR);
-        bottom.add(backBtn);
-        bottom.add(checkoutBtn);
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(ThemeGUI.BACKGROUND_COLOR);
+        bottomPanel.add(backBtn);
+        bottomPanel.add(checkoutBtn);
+        cartPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-        panel.add(bottom, BorderLayout.SOUTH);
-
-        return panel;
+        return cartPanel;
     }
 
     // Creates a displayed version of each item inside the customer's cart
@@ -170,8 +166,7 @@ public class CustomerHomePage extends JPanel {
         long quantityInCart = customer.getCart().getQuantityOfItem(item);
 
         // Text for all of the item's attributes
-        JTextArea itemAttributes = new JTextArea(
-                item.getName() + "\n" +
+        JTextArea itemAttributes = new JTextArea(item.getName() + "\n" +
                 "Price: $" + item.getPrice() + "\n" +
                 "Description: " + item.getDescription() + "\n" +
                 "Quantity in Cart: " + quantityInCart
@@ -180,29 +175,28 @@ public class CustomerHomePage extends JPanel {
         itemAttributes.setBackground(ThemeGUI.PANEL_COLOR);
         itemAttributes.setForeground(ThemeGUI.TEXT_MAIN);
         itemAttributes.setFont(ThemeGUI.SCROLL_FONT);
-
         cartItemDisplay.add(itemAttributes, BorderLayout.CENTER);
 
         // Buttons for removing the item or editing its quantity in the cart
-        JButton removeBtn = HelperGUI.createThemeButton("Remove");
-        JButton editQtyBtn = HelperGUI.createThemeButton("Edit Quantity");
+        JButton removeBtn = HelperFunctionsGUI.createThemeButton("Remove");
+        JButton editQtyBtn = HelperFunctionsGUI.createThemeButton("Edit Quantity");
 
         // Removes this item from the cart
         removeBtn.addActionListener(e -> {
             customer.getCart().removeItem(item, store.getInventory());
-            HelperGUI.information(parent, "Item removed from cart.");
+            HelperFunctionsGUI.information(parent, "Item removed from cart.");
             refreshCartPage();
         });
 
         // Pop-up box for editing item quantity in cart
         editQtyBtn.addActionListener(e -> editQuantityPopUp(item, quantityInCart));
 
-        JPanel btnPanel = new JPanel();
-        btnPanel.setOpaque(false);
-        btnPanel.add(removeBtn);
-        btnPanel.add(editQtyBtn);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(removeBtn);
+        buttonPanel.add(editQtyBtn);
 
-        cartItemDisplay.add(btnPanel, BorderLayout.SOUTH);
+        cartItemDisplay.add(buttonPanel, BorderLayout.SOUTH);
 
         return cartItemDisplay;
     }
@@ -212,17 +206,13 @@ public class CustomerHomePage extends JPanel {
 
         JTextField field = new JTextField();
         field.setText("" + currentQty);
-
         JPanel panel = new JPanel(new GridLayout(2, 1));
         panel.setOpaque(false);
         panel.add(new JLabel("Enter new quantity:"));
         panel.add(field);
 
         // Customer selects OK to confirm new quantity or cancel to go back to cart
-        int userSelection = JOptionPane.showConfirmDialog(
-                parent,
-                panel,
-                "Edit Quantity",
+        int userSelection = JOptionPane.showConfirmDialog(parent, panel, "Edit Quantity",
                 JOptionPane.OK_CANCEL_OPTION
         );
 
@@ -231,23 +221,23 @@ public class CustomerHomePage extends JPanel {
         String text = field.getText().trim();
 
         // Checks for valid quantity input
-        if (!HelperGUI.positiveIntegerCheck(text)) {
-            HelperGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
+        if (!HelperFunctionsGUI.positiveIntegerCheck(text)) {
+            HelperFunctionsGUI.error(parent, "Invalid entry. Please enter a non-negative value for quantity.");
             return;
         }
 
         int newQty = Integer.parseInt(text);
 
         // Updates item quantity in inventory
-        boolean updated = customer.getCart().updateQuantity(item, newQty, store.getInventory());
+        boolean quantityChanged = customer.getCart().updateQuantity(item, newQty, store.getInventory());
 
         // Displays error message if there is not enough inventory
-        if (!updated) {
-            HelperGUI.error(parent, "We're sorry. There is not enough quantity in inventory.");
+        if (!quantityChanged) {
+            HelperFunctionsGUI.error(parent, "We're sorry. There is not enough quantity in inventory.");
             return;
         }
 
-        HelperGUI.information(parent, "Quantity updated.");
+        HelperFunctionsGUI.information(parent, "Quantity updated.");
         refreshCartPage();
     }
 

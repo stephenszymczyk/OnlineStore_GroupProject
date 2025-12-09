@@ -37,9 +37,9 @@ public class Transaction {
         }
 
         // Gets today's date
-        LocalDate now = LocalDate.now();
-        int currentYear = now.getYear() % 100;  
-        int currentMonth = now.getMonthValue();
+        LocalDate currentTimeDate = LocalDate.now();
+        int currentYear = currentTimeDate.getYear() % 100;  
+        int currentMonth = currentTimeDate.getMonthValue();
 
         // Checks if card is expired
         if (year < currentYear || (year == currentYear && month < currentMonth)) {
@@ -69,7 +69,7 @@ public class Transaction {
         // Clears customer's cart
         customer.getCart().clearCart();
 
-        // Returns the completed order (confirmation number included)
+        // Returns the completed order with confirmation number
         return newOrder;
     }
 }

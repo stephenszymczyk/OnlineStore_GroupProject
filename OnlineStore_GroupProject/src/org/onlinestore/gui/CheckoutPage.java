@@ -23,128 +23,134 @@ public class CheckoutPage extends JPanel {
     // Reference to the logged-in customer
     private Customer customer;
 
-    // Constructor that initializes the page with the main window, store data, and customer
+    // Constructor
     public CheckoutPage(MainHomePage parent, OnlineStore store, Customer customer) {
-        this.parent = parent;     // Represents MainHomePage window
-        this.store = store;       // Represents instance of OnlineStore
-        this.customer = customer; 
-        createGUI();              
+        this.parent = parent;
+        this.store = store;
+        this.customer = customer;
+        createGUI();
     }
 
     // Creates the entire Checkout page GUI
     private void createGUI() {
 
-        // BorderLayout and theme background
         setLayout(new BorderLayout());
         setBackground(ThemeGUI.BACKGROUND_COLOR);
 
-        // Title displayed at the top of the checkout page
+        // Title displayed at the top of page
         JLabel title = new JLabel("Checkout", SwingConstants.CENTER);
         title.setFont(ThemeGUI.SUBTITLE_FONT);
         title.setForeground(ThemeGUI.TEXT_MAIN);
-        title.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
+        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         add(title, BorderLayout.NORTH);
 
-        // Saves the customers cart
         Cart cart = customer.getCart();
 
-        // Main panel that contains the order summary
+        // Main panel for contents of scroll panel
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(ThemeGUI.BACKGROUND_COLOR);
+        mainPanel.setOpaque(false);
 
-        // Box for displaying items that were in customer's cart
-        JPanel itemsBox = HelperGUI.createFieldBox(5);
+        // Frame for item lists
+        JPanel itemsBox = new JPanel();
+        itemsBox.setLayout(new BoxLayout(itemsBox, BoxLayout.Y_AXIS));
+        itemsBox.setBackground(ThemeGUI.PANEL_COLOR);
+        itemsBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR, 1, true),
+                BorderFactory.createEmptyBorder(20, 25, 20, 25)
+        ));
+        itemsBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel itemsTitle = HelperGUI.createFieldLabel("Items in Your Cart:");
-        itemsBox.add(itemsTitle);
+        JLabel cartContentTitle = HelperFunctionsGUI.createLabelForField("Items in Your Cart:");
+        cartContentTitle.setFont(ThemeGUI.SUBTITLE_FONT);
+        cartContentTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        cartContentTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
+        itemsBox.add(cartContentTitle);
 
-        // Groups items by quantity since cart stores duplicates
+        // Combines duplicate cart items using map so that they appear using a single quantity
         Map<Item, Integer> quantityInCart = new LinkedHashMap<>();
         for (Item cartItem : cart.getItems()) {
             quantityInCart.put(cartItem, quantityInCart.getOrDefault(cartItem, 0) + 1);
         }
+        for (Map.Entry<Item, Integer> listedItem : quantityInCart.entrySet()) {
+            Item currentItem = listedItem.getKey();
+            int qty = listedItem.getValue();
 
-        // Adds labels for all items in cart and their quantities
-        for (Map.Entry<Item, Integer> itemEntry : quantityInCart.entrySet()) {
-            Item cartItem = itemEntry.getKey();
-            int qty = itemEntry.getValue();
-
-            JLabel label = HelperGUI.createFieldLabel(
-                cartItem.getName() + " (x" + qty + ")  -  $" +
-                String.format("%.2f", cartItem.getPrice()) + " each"
+            JLabel label = HelperFunctionsGUI.createLabelForField(
+                currentItem.getName() + " (x" + qty + ") — $" + String.format("%.2f", currentItem.getPrice())
             );
+            label.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
+            label.setAlignmentX(Component.LEFT_ALIGNMENT);
             itemsBox.add(label);
         }
-        
-        itemsBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         mainPanel.add(itemsBox);
+        mainPanel.add(Box.createVerticalStrut(20));
 
-        // Box that displays order summary
-        JPanel orderSummary = new JPanel();
-        orderSummary.setLayout(new BoxLayout(orderSummary, BoxLayout.Y_AXIS));
-        orderSummary.setBackground(ThemeGUI.PANEL_COLOR);
-        orderSummary.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR),
-            BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        // Panel for order details
+        JPanel orderDetailPanel = new JPanel();
+        orderDetailPanel.setLayout(new BoxLayout(orderDetailPanel, BoxLayout.Y_AXIS));
+        orderDetailPanel.setBackground(ThemeGUI.PANEL_COLOR);
+        orderDetailPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR, 1, true),
+                BorderFactory.createEmptyBorder(20, 25, 20, 25)
         ));
+        orderDetailPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel subtotalLabel = HelperGUI.createFieldLabel(
+        JLabel subtotalLabel = HelperFunctionsGUI.createLabelForField(
             "Subtotal: $" + String.format("%.2f", cart.getSubtotal())
         );
-        JLabel taxLabel = HelperGUI.createFieldLabel(
+        subtotalLabel.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
+        JLabel taxLabel = HelperFunctionsGUI.createLabelForField(
             "Tax: $" + String.format("%.2f", cart.getTax())
         );
-        JLabel totalLabel = HelperGUI.createFieldLabel(
+        taxLabel.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
+
+        JLabel totalLabel = HelperFunctionsGUI.createLabelForField(
             "Total: $" + String.format("%.2f", cart.getTotal())
         );
-        JLabel addressLabel = HelperGUI.createFieldLabel(
-            "<html>" +
-                "Shipping Address:<br>" +
-                customer.getAddress().getStreetAddress() + "<br>" +
-                customer.getAddress().getCity() + ", " +
-                customer.getAddress().getState() + " " +
-                customer.getAddress().getZipCode() +
-            "</html>"
+        totalLabel.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
+
+        JLabel addressLabel = HelperFunctionsGUI.createLabelForField("<html>"
+            + "Shipping Address:<br>"
+            + customer.getAddress().getStreetAddress() + "<br>"
+            + customer.getAddress().getCity() + ", "
+            + customer.getAddress().getState() + " "
+            + customer.getAddress().getZipCode()
+            + "</html>"
         );
+        addressLabel.setBorder(BorderFactory.createEmptyBorder(12, 0, 12, 0));
 
-        orderSummary.add(subtotalLabel);
-        orderSummary.add(Box.createVerticalStrut(4));
-        orderSummary.add(taxLabel);
-        orderSummary.add(Box.createVerticalStrut(4));
-        orderSummary.add(totalLabel);
-        orderSummary.add(Box.createVerticalStrut(10));
-        orderSummary.add(addressLabel);
-        orderSummary.add(Box.createVerticalStrut(10));
+        orderDetailPanel.add(subtotalLabel);
+        orderDetailPanel.add(taxLabel);
+        orderDetailPanel.add(totalLabel);
+        orderDetailPanel.add(addressLabel);
 
-        // Button that takes customer to the address update page
-        JButton changeAddressButton = HelperGUI.createThemeButton("Change Address");
+        JButton changeAddressButton = HelperFunctionsGUI.createThemeButton("Change Address");
+        changeAddressButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         changeAddressButton.addActionListener(e -> {
             parent.setContentPane(new AddressUpdatePage(parent, store, customer));
             parent.revalidate();
             parent.repaint();
         });
-        orderSummary.add(changeAddressButton);
 
-        // Adds spacing and summary info to display
-        orderSummary.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainPanel.add(Box.createVerticalStrut(10));
-        mainPanel.add(orderSummary);
+        orderDetailPanel.add(changeAddressButton);
 
-        add(HelperGUI.centered(mainPanel), BorderLayout.CENTER);
+        mainPanel.add(orderDetailPanel);
 
-        // Buttons for confirming payment of canceling checkout
-        JButton paymentBtn = HelperGUI.createThemeButton("Confirm Payment");
-        JButton cancelBtn = HelperGUI.createThemeButton("Cancel");
+        // Scrolling panel
+        JScrollPane scroll = new JScrollPane(mainPanel);
+        scroll.setBorder(null);
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+        scroll.getVerticalScrollBar().setUnitIncrement(20);
+        add(scroll, BorderLayout.CENTER);
 
-        // Processes transaction if payment button is selected
-        paymentBtn.addActionListener(e -> processTransaction());
+        JButton paymentButton = HelperFunctionsGUI.createThemeButton("Confirm Payment");
+        JButton cancelPaymentButton = HelperFunctionsGUI.createThemeButton("Cancel");
 
-        // Cancel button to return back to customer home page
-        cancelBtn.addActionListener(e -> parent.showCustomerHome(customer));
-        
-        // Cancel and payment button location
-        JPanel bottom = HelperGUI.createButtonRow(paymentBtn, cancelBtn);
+        paymentButton.addActionListener(e -> processTransaction());
+        cancelPaymentButton.addActionListener(e -> parent.showCustomerHome(customer));
+
+        JPanel bottom = HelperFunctionsGUI.createButtonRow(paymentButton, cancelPaymentButton);
         add(bottom, BorderLayout.SOUTH);
     }
 
@@ -155,7 +161,6 @@ public class CheckoutPage extends JPanel {
         JTextField expirationDate = new JTextField();
         JTextField cvvNumber = new JTextField();
 
-        // Pop-up credit card information input fields
         JPanel box = new JPanel(new GridLayout(3, 2, 12, 12));
         box.add(new JLabel("16 Digit Credit Card Number:"));
         box.add(creditCardNumber);
@@ -164,40 +169,31 @@ public class CheckoutPage extends JPanel {
         box.add(new JLabel("3 Digit CVV:"));
         box.add(cvvNumber);
 
-        // Customer selects OK to submit payment or cancel to go back to menu
-        int selection = JOptionPane.showConfirmDialog(
-            parent,
-            box,
-            "Enter Payment Information",
-            JOptionPane.OK_CANCEL_OPTION
+        int selection = JOptionPane.showConfirmDialog(parent, box, "Enter Payment Information", 
+        		JOptionPane.OK_CANCEL_OPTION
         );
 
         if (selection != JOptionPane.OK_OPTION)
             return;
 
-        // Creates a transaction object (handles payment validation + order creation)
         Transaction transaction = new Transaction(customer, store);
 
-        // Calls transaction to validate payment and create an order
         Order order = transaction.processPayment(
             creditCardNumber.getText(),
             expirationDate.getText(),
             cvvNumber.getText()
         );
 
-        // Checks that payment information is valid
         if (order == null) {
-            HelperGUI.error(parent, "Invalid payment information.");
+            HelperFunctionsGUI.error(parent, "Invalid payment information.");
             return;
         }
 
-        // Displays confirmation message and order number if payment is approved
-        HelperGUI.information(parent, 
-            "Your payment has been confirmed.\n" +
-            "Confirmation Number: " + order.getConfirmationNumber()
+        HelperFunctionsGUI.information(parent,
+            "Your payment has been confirmed.\n"
+            + "Confirmation Number: " + order.getConfirmationNumber()
         );
 
-        // Returns to customer home page
         parent.showCustomerHome(customer);
     }
 }

@@ -5,11 +5,10 @@ import java.awt.*;
 import org.onlinestore.software.OnlineStore;
 import org.onlinestore.people.Manager;
 import org.onlinestore.people.Customer;
-import org.onlinestore.people.Person;
 
 public class LoginPage extends JPanel {
 
-	// Reference for main home page
+    // Reference for main home page
     private MainHomePage parent;
 
     // Reference for OnlineStore system data
@@ -17,137 +16,100 @@ public class LoginPage extends JPanel {
 
     // Constructor that initializes the page with the main window and OnlineStore system data
     public LoginPage(MainHomePage parent, OnlineStore store) {
-        this.parent = parent;   // Represents MainHomePage window
-        this.store = store;     // Represents instance of OnlineStore
+        this.parent = parent;   
+        this.store = store;     
         createGUI();           
     }
 
     // Creates the entire login GUI
     private void createGUI() {
 
-        // BorderLayout and apply theme background
         setLayout(new BorderLayout());
         setBackground(ThemeGUI.BACKGROUND_COLOR);
 
-        // Frame that contains all the login fields and buttons
-        JPanel box = new JPanel();
-        box.setPreferredSize(ThemeGUI.LARGE_BOX);           
-        box.setBackground(ThemeGUI.PANEL_COLOR);
-        box.setBorder(BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR));
-        box.setLayout(new GridBagLayout());               
+        // Main panel for login page
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setOpaque(false);
 
-        // Constraints for arranging everything inside frame
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(12, 12, 12, 12);
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.WEST;
-
-        // Title located at top of login box
+        // Login page header
         JLabel title = new JLabel("Login", SwingConstants.CENTER);
-        title.setFont(ThemeGUI.SUBTITLE_FONT);
+        title.setFont(ThemeGUI.TITLE_FONT);
         title.setForeground(ThemeGUI.TEXT_MAIN);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        mainPanel.add(title);
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        box.add(title, gbc);
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.WEST;
+        // Panel for login fields
+        JPanel fieldPanel = new JPanel();
+        fieldPanel.setLayout(new BoxLayout(fieldPanel, BoxLayout.Y_AXIS));
+        fieldPanel.setOpaque(false);
+        fieldPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Label for username field
-        JLabel usernameLabel = HelperGUI.createFieldLabel("Username:");
+        int fieldWidth = 260;
+        Dimension fieldSize = new Dimension(fieldWidth, 34);
 
-        // Input box for username field 
-        JTextField usernameField = HelperGUI.createThemeTextField();
-        usernameField.setPreferredSize(new Dimension(180, 28)); 
-        
-        // Adds username label
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        box.add(usernameLabel, gbc);
+        // Username field
+        JTextField usernameField = HelperFunctionsGUI.createThemeTextField();
+        usernameField.setMaximumSize(fieldSize);
 
-        // Adds username input field
-        gbc.gridx = 1;
-        box.add(usernameField, gbc);
+        fieldPanel.add(HelperFunctionsGUI.fieldLayout("Username", usernameField));
+        fieldPanel.add(Box.createVerticalStrut(15));
 
-        // Label for password field
-        JLabel passwordLabel = HelperGUI.createFieldLabel("Password:");
+        // Password field
+        JPasswordField passwordField = HelperFunctionsGUI.createThemePasswordField();
+        passwordField.setMaximumSize(fieldSize);
 
-        // Input box for password field
-        JPasswordField passwordField = HelperGUI.createThemePasswordField();
-        passwordField.setPreferredSize(new Dimension(180, 28)); 
-        
-        // Adds password label
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        box.add(passwordLabel, gbc);
+        fieldPanel.add(HelperFunctionsGUI.fieldLayout("Password", passwordField));
+        fieldPanel.add(Box.createVerticalStrut(20));
+        mainPanel.add(fieldPanel);
 
-        // Adds password field
-        gbc.gridx = 1;
-        box.add(passwordField, gbc);
-
-        // Creates login and back buttons
-        JButton loginBtn = HelperGUI.createThemeButton("Sign In");
-        JButton backBtn = HelperGUI.createThemeButton("Back");
-
-        // Row that contains login and back buttons
-        JPanel buttonRow = new JPanel(new FlowLayout());
-        buttonRow.setOpaque(false);
-        buttonRow.add(loginBtn);
-        buttonRow.add(backBtn);
-
-        // Adds row for login and back buttons
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        box.add(buttonRow, gbc);
-
-        // Centers the login box in the page
-        JPanel centerPanel = HelperGUI.centered(box);
+        // Center panel
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerPanel.setOpaque(false);
+        centerPanel.add(mainPanel);
         add(centerPanel, BorderLayout.CENTER);
 
-        // Allows user to tab to password field from username field
-        HelperGUI.enterKeyFields(usernameField, passwordField);
+        // Login and back buttons
+        JButton loginBtn = HelperFunctionsGUI.createThemeButton("Sign In");
+        JButton backBtn = HelperFunctionsGUI.createThemeButton("Back");
+        JPanel buttonRow = HelperFunctionsGUI.createButtonRow(loginBtn, backBtn);
+        add(buttonRow, BorderLayout.SOUTH);
 
-        // Allows user to submit password using enter key
-        HelperGUI.enterKeySubmit(passwordField, loginBtn);
+        // Allows user to tab from username to password
+        HelperFunctionsGUI.enterKeyFields(usernameField, passwordField);
+
+        // Allows user to submit password with enter
+        HelperFunctionsGUI.enterKeySubmit(passwordField, loginBtn);
 
         // Logic for when user selects sign in button
         loginBtn.addActionListener(e -> {
 
-            // Gets users input
-            String u = usernameField.getText().trim();                 // u = entered username
-            String p = new String(passwordField.getPassword()).trim(); // p = entered password
+            String uName = usernameField.getText().trim();                 
+            String uPass = new String(passwordField.getPassword()).trim(); 
 
-            // Checks to make sure fields are not empty
-            if (HelperGUI.empty(u, p)) {
-                HelperGUI.error(parent, "Please enter your username and password.");
+            if (HelperFunctionsGUI.empty(uName, uPass)) {
+                HelperFunctionsGUI.error(parent, "Please enter your username and password.");
                 return;
             }
 
-            // Gets user from account from OnlineStore
-            var person = store.login(u, p);   
-
-            // Error message if user enters invalid account credentials
+            var person = store.login(uName, uPass);   
             if (person == null) {
-                HelperGUI.error(parent, "Incorrect username or password.");
+                HelperFunctionsGUI.error(parent, "Incorrect username or password.");
                 return;
             }
 
-            // If credentials are valid checks whether user is a manager or a customer
             if (person instanceof Manager) {
-                HelperGUI.information(parent, "Manager Login Successful.");
+                HelperFunctionsGUI.information(parent, "Manager Login Successful.");
                 parent.showManagerHome((Manager) person);
             } 
             else {
-                HelperGUI.information(parent, "Customer Login Successful.");
+                HelperFunctionsGUI.information(parent, "Customer Login Successful.");
                 parent.showCustomerHome((Customer) person);
             }
         });
 
-        // Returns user to main home page if back button is selected
+        // Back button
         backBtn.addActionListener(e -> parent.loadHomePage());
     }
 }
