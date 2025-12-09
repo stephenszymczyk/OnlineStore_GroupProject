@@ -37,7 +37,7 @@ public class ManagerHomePage extends JPanel {
         box.setPreferredSize(new Dimension(400, 260));
         box.setBackground(ThemeGUI.PANEL_COLOR);
         box.setBorder(BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR));
-        box.setLayout(new GridLayout(4, 1, 15, 15));
+        box.setLayout(new GridLayout(5, 1, 15, 15));
         box.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
         // Title displayed at the top of the manager menu box
@@ -61,6 +61,13 @@ public class ManagerHomePage extends JPanel {
             parent.revalidate();
             parent.repaint();
         });
+        
+        JButton viewOrdersBtn = HelperGUI.createThemeButton("View Orders");
+        viewOrdersBtn.addActionListener(e -> {
+            parent.setContentPane(new ManagerOrderHistoryPage(parent, store, manager));
+            parent.revalidate();
+            parent.repaint();
+        });
 
         // Returns user to main home page when Logout is selected
         logoutBtn.addActionListener(e -> parent.loadHomePage());
@@ -69,6 +76,7 @@ public class ManagerHomePage extends JPanel {
         box.add(title);
         box.add(viewInventoryBtn);
         box.add(addItemBtn);
+        box.add(viewOrdersBtn); 
         box.add(logoutBtn);
 
         // Centers the manager menu in the window

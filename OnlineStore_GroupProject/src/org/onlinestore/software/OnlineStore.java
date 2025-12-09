@@ -16,25 +16,99 @@ public class OnlineStore implements Serializable {
 	private static final long serialVersionUID = 1L;
     private Inventory inventory;
     private ArrayList<Person> users;
+    private OrderHistory orderHistory = new OrderHistory();
 
     public OnlineStore() {
         this.inventory = new Inventory();
         this.users = new ArrayList<>();
 
         // Default manager values
-        Manager defaultManager = new Manager("Karl Schmidt", "manager", "ottertail", this);
+        Manager defaultManager = new Manager("Tommy Loyd", "manager", "ottertail", this);
         this.users.add(defaultManager);
+        
+        // Default customer 
+        Customer defaultCustomer = new Customer("Stephen Szymczyk", "stephen", "stephen",
+        	new Address("3220 W Westridge Ave", "Tucson", "AZ", "85745"),
+            0.09);
+
+        // Add to system users
+        this.users.add(defaultCustomer);
 
         createDefaultItems();
     }
     
     //default inventory items for testing methods
     private void createDefaultItems() {
-        inventory.addItem(new Item(399.99, "Binocular", "Vortex Diamondback 10x42 Binocular", 60));
-        inventory.addItem(new Item(49.95, "Backpack", "Black jansport backpack", 20));
-        inventory.addItem(new Item(29.99, "Hydroflask", "40 oz hydroflask water bottle", 75));
-    }
 
+        inventory.addItem(new Item(
+            110.00,
+            "Arizona Basketball Jersey",
+            "Nike Arizona Wildcats Basketball Authentic 2024 Jersey",
+            30
+        ));
+
+        inventory.addItem(new Item(
+            85.00,
+            "Navy Basketball Shorts",
+            "Nike Arizona Wildcats Basketball Authentic 2024 Shorts (Navy)",
+            20
+        ));
+
+        inventory.addItem(new Item(
+            65.00,
+            "Red Basketball Shorts",
+            "Nike Arizona Wildcats Replica Basketball Shorts (Red)",
+            50
+        ));
+
+        inventory.addItem(new Item(
+            60.00,
+            "Retro Basketball Shorts",
+            "Nike Arizona Wildcats Retro Basketball Shorts (White/Red)",
+            75
+        ));
+
+        inventory.addItem(new Item(
+            85.00,
+            "Women's Nike Half-Zip",
+            "Nike Womens Arizona Block A Navy Half-Zip Pullover",
+            120
+        ));
+
+        inventory.addItem(new Item(
+            75.00,
+            "Women's Crewneck",
+            "Nike Womens Arizona 3D Oversized Fleece Navy Crewneck",
+            25
+        ));
+
+
+        inventory.addItem(new Item(
+            33.74,
+            "Arizona Basketball",
+            "Nike Arizona Wildcats Team Replica Basketball",
+            40
+        ));
+
+        inventory.addItem(new Item(
+            44.99,
+            "Zona Basketball T-Shirt",
+            "Men's Nike Navy Arizona Wildcats 2025 Courtside Basketball Legend Dri-FIT T-Shirt",
+            60
+        ));
+
+        inventory.addItem(new Item(
+            54.99,
+            "Women's Wildcats Pullover",
+            "Women's Gameday Couture Gray Arizona Wildcats Basketball Premium Fleece Drop Pullover Sweatshirt",
+            35
+        ));
+    }
+    
+    public OrderHistory getOrderHistory() {
+        return orderHistory;
+    }
+        
     public Inventory getInventory() {
         return inventory;
     }

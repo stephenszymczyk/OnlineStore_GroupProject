@@ -33,7 +33,7 @@ public class CustomerInventoryPage extends JPanel {
         setBackground(ThemeGUI.BACKGROUND_COLOR);
 
         // Title displayed at the top of the inventory page
-        JLabel title = new JLabel("Store Inventory", SwingConstants.CENTER);
+        JLabel title = new JLabel("Campus Store Inventory", SwingConstants.CENTER);
         title.setFont(ThemeGUI.SUBTITLE_FONT);
         title.setForeground(ThemeGUI.TEXT_MAIN);
         title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -54,6 +54,7 @@ public class CustomerInventoryPage extends JPanel {
         JScrollPane scroll = new JScrollPane(itemListPanel);
         scroll.getViewport().setBackground(ThemeGUI.BACKGROUND_COLOR);
         scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(40); 
 
         add(scroll, BorderLayout.CENTER);
 
@@ -80,7 +81,7 @@ public class CustomerInventoryPage extends JPanel {
 
         // Text for all of item's attributes
         JTextArea itemAttributes = new JTextArea(
-                "Name: " + item.getName() + "\n" +
+                item.getName() + "\n" +
                 "Price: $" + item.getPrice() + "\n" +
                 "Description: " + item.getDescription() + "\n" +
                 "Quantity in Stock: " + item.getQuantity()
@@ -88,7 +89,7 @@ public class CustomerInventoryPage extends JPanel {
         itemAttributes.setEditable(false);
         itemAttributes.setBackground(ThemeGUI.PANEL_COLOR);
         itemAttributes.setForeground(ThemeGUI.TEXT_MAIN);
-        itemAttributes.setFont(ThemeGUI.REGULAR_FONT);
+        itemAttributes.setFont(ThemeGUI.SCROLL_FONT);
 
         itemDisplay.add(itemAttributes, BorderLayout.CENTER);
 
@@ -150,7 +151,7 @@ public class CustomerInventoryPage extends JPanel {
             // Adds entered quantity of item to customer's cart
             customer.getCart().addItems(item, qty);
 
-            HelperGUI.information(parent, "Added to cart!");
+            HelperGUI.information(parent, "Item added to Cart.");
 
             // Refreshes the page so updated stock displays immediately
             parent.setContentPane(new CustomerInventoryPage(parent, store, customer));

@@ -55,6 +55,7 @@ public class ManagerInventoryPage extends JPanel {
         JScrollPane scroll = new JScrollPane(itemListPanel);
         scroll.getViewport().setBackground(ThemeGUI.BACKGROUND_COLOR);
         scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(40); 
 
         add(scroll, BorderLayout.CENTER);
 
@@ -82,7 +83,7 @@ public class ManagerInventoryPage extends JPanel {
 
         // Text for all of item's attributes
         JTextArea itemAttributes = new JTextArea(
-                "Name: " + item.getName() + "\n" +
+                item.getName() + "\n" +
                 "Price: $" + item.getPrice() + "\n" +
                 "Description: " + item.getDescription() + "\n" +
                 "Quantity: " + item.getQuantity()
@@ -90,7 +91,7 @@ public class ManagerInventoryPage extends JPanel {
         itemAttributes.setEditable(false);
         itemAttributes.setBackground(ThemeGUI.PANEL_COLOR);
         itemAttributes.setForeground(ThemeGUI.TEXT_MAIN);
-        itemAttributes.setFont(ThemeGUI.REGULAR_FONT);
+        itemAttributes.setFont(ThemeGUI.SCROLL_FONT);
 
         itemDisplay.add(itemAttributes, BorderLayout.CENTER);
 

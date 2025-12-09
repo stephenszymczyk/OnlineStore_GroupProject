@@ -9,6 +9,8 @@ import org.onlinestore.people.Customer;
 import org.onlinestore.software.Cart;
 import org.onlinestore.software.Item;
 import org.onlinestore.software.OnlineStore;
+import org.onlinestore.software.Transaction;
+import org.onlinestore.software.Order;
 
 public class CheckoutPage extends JPanel {
 
@@ -74,11 +76,18 @@ public class CheckoutPage extends JPanel {
             );
             itemsBox.add(label);
         }
-
+        
+        itemsBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.add(itemsBox);
 
         // Box that displays order summary
-        JPanel orderSummary = HelperGUI.createFieldBox(5);
+        JPanel orderSummary = new JPanel();
+        orderSummary.setLayout(new BoxLayout(orderSummary, BoxLayout.Y_AXIS));
+        orderSummary.setBackground(ThemeGUI.PANEL_COLOR);
+        orderSummary.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR),
+            BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
 
         JLabel subtotalLabel = HelperGUI.createFieldLabel(
             "Subtotal: $" + String.format("%.2f", cart.getSubtotal())
@@ -90,17 +99,23 @@ public class CheckoutPage extends JPanel {
             "Total: $" + String.format("%.2f", cart.getTotal())
         );
         JLabel addressLabel = HelperGUI.createFieldLabel(
-            "Shipping To: " +
-            customer.getAddress().getStreetAddress() + ", " +
-            customer.getAddress().getCity() + " " +
-            customer.getAddress().getState() + " " +
-            customer.getAddress().getZipCode()
+            "<html>" +
+                "Shipping Address:<br>" +
+                customer.getAddress().getStreetAddress() + "<br>" +
+                customer.getAddress().getCity() + ", " +
+                customer.getAddress().getState() + " " +
+                customer.getAddress().getZipCode() +
+            "</html>"
         );
 
         orderSummary.add(subtotalLabel);
+        orderSummary.add(Box.createVerticalStrut(4));
         orderSummary.add(taxLabel);
+        orderSummary.add(Box.createVerticalStrut(4));
         orderSummary.add(totalLabel);
+        orderSummary.add(Box.createVerticalStrut(10));
         orderSummary.add(addressLabel);
+        orderSummary.add(Box.createVerticalStrut(10));
 
         // Button that takes customer to the address update page
         JButton changeAddressButton = HelperGUI.createThemeButton("Change Address");
@@ -112,6 +127,7 @@ public class CheckoutPage extends JPanel {
         orderSummary.add(changeAddressButton);
 
         // Adds spacing and summary info to display
+        orderSummary.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(orderSummary);
 
@@ -159,29 +175,27 @@ public class CheckoutPage extends JPanel {
         if (selection != JOptionPane.OK_OPTION)
             return;
 
-        // Checks that credit card has correct number of digits.
-        if (!creditCardNumber.getText().matches("\\d{16}")) {
-            HelperGUI.error(parent, "Invalid credit card number.");
+        // Creates a transaction object (handles payment validation + order creation)
+        Transaction transaction = new Transaction(customer, store);
+
+        // Calls transaction to validate payment and create an order
+        Order order = transaction.processPayment(
+            creditCardNumber.getText(),
+            expirationDate.getText(),
+            cvvNumber.getText()
+        );
+
+        // Checks that payment information is valid
+        if (order == null) {
+            HelperGUI.error(parent, "Invalid payment information.");
             return;
         }
 
-        // Checks that expiration date is in correct format
-        if (!expirationDate.getText().matches("\\d{2}/\\d{2}")) {
-            HelperGUI.error(parent, "Invalid expiration date.");
-            return;
-        }
-
-        // Checks that cvv has correct number of digits
-        if (!cvvNumber.getText().matches("\\d{3}")) {
-            HelperGUI.error(parent, "Invalid CVV.");
-            return;
-        }
-
-        // Displays confirmation message if payment is approved
-        HelperGUI.information(parent, "Your payment has been confirmed. Thank you for your order.");
-
-        // Clears cart once payments has been completed
-        customer.getCart().clearCart();
+        // Displays confirmation message and order number if payment is approved
+        HelperGUI.information(parent, 
+            "Your payment has been confirmed.\n" +
+            "Confirmation Number: " + order.getConfirmationNumber()
+        );
 
         // Returns to customer home page
         parent.showCustomerHome(customer);

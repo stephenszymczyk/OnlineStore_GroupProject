@@ -12,7 +12,7 @@ public class HelperGUI {
 
     // Displays information message
     public static void information(Component parent, String msg) {
-        JOptionPane.showMessageDialog(parent, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(parent, msg, "", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Displays warning message
@@ -186,4 +186,6 @@ public class HelperGUI {
 
         return button;
     }
+    
+    
 }

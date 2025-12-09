@@ -15,10 +15,17 @@ public class MainHomePage extends JFrame {
     public MainHomePage(OnlineStore store) {
         this.store = store;
 
-        setTitle("Online Store");                        // Main window title
+        setTitle("Campus Store");                        // Main window title
         setSize(600, 500);                               // Main window size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Close window
         setLocationRelativeTo(null);                     // Centers window on users screen
+
+        setBackground(ThemeGUI.BACKGROUND_COLOR);                     
+        getContentPane().setBackground(ThemeGUI.BACKGROUND_COLOR);   
+        getRootPane().setBackground(ThemeGUI.BACKGROUND_COLOR);       
+        getLayeredPane().setBackground(ThemeGUI.BACKGROUND_COLOR);    
+
+        ((JPanel) getContentPane()).setOpaque(true);                
 
         // Automatically saves data when user exits window
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -36,53 +43,59 @@ public class MainHomePage extends JFrame {
     // Creates main menu for Online Store GUI
     private void createGUI() {
 
-        // Main panel
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        // Black main panel
+        JPanel mainPanel = new JPanel();
         mainPanel.setBackground(ThemeGUI.BACKGROUND_COLOR);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // Welcome banner at top of main menu
-        JLabel banner = new JLabel("Welcome to the Online Store", SwingConstants.CENTER);
-        banner.setFont(ThemeGUI.TITLE_FONT);
-        banner.setForeground(ThemeGUI.TEXT_MAIN);
-        banner.setOpaque(true);
-        banner.setBackground(ThemeGUI.HEADER_COLOR);
-        banner.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        // Title at top of page
+        JLabel textBanner = new JLabel("Welcome to the Campus Store");
+        textBanner.setFont(ThemeGUI.TITLE_FONT);
+        textBanner.setForeground(ThemeGUI.TEXT_MAIN);
+        textBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
+        textBanner.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
 
-        // Centers frame for login and create account buttons
+        // Online store icon
+        ImageIcon bannerIcon = new ImageIcon(getClass().getResource("/UAlogo.png"));
+        Image scaledImg = bannerIcon.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
+        bannerIcon = new ImageIcon(scaledImg);
+
+        JLabel imageBanner = new JLabel(bannerIcon);
+        imageBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
+        imageBanner.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+
+        // Button frame for main panel options
         JPanel box = new JPanel();
-        box.setPreferredSize(ThemeGUI.SMALL_BOX);
-        box.setBackground(ThemeGUI.PANEL_COLOR);
-        box.setBorder(BorderFactory.createLineBorder(ThemeGUI.OUTLINE_COLOR));
         box.setLayout(new GridLayout(2, 1, 12, 12));
-        box.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+        box.setPreferredSize(new Dimension(250, 120));
+        box.setOpaque(false); 
 
-        // Login button
         JButton loginBtn = HelperGUI.createThemeButton("Login");
-
-        // Create account button
         JButton createAccountBtn = HelperGUI.createThemeButton("Create Account");
 
-        // Goes to login page when login button is clicked
-        loginBtn.addActionListener(e -> openLoginPage());
-
-        // Goes to create account page when login button is clicked
-        createAccountBtn.addActionListener(e -> openCreateAccountPage());
-
-        // Adds login and create account buttons to center frame
         box.add(loginBtn);
         box.add(createAccountBtn);
 
-        // Centers frame in window
-        JPanel center = HelperGUI.centered(box);
+        // Center the button frame
+        JPanel buttonCenter = new JPanel();
+        buttonCenter.setOpaque(false);
+        buttonCenter.add(box);
+        buttonCenter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Adds banner and main menu box to frame
-        mainPanel.add(banner, BorderLayout.NORTH);
-        mainPanel.add(center, BorderLayout.CENTER);
+        // Adds everything to main panel
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(textBanner);
+        mainPanel.add(imageBanner);
+        mainPanel.add(buttonCenter);
+        mainPanel.add(Box.createVerticalGlue());
 
-        // Set the window's display to the main panel
         setContentPane(mainPanel);
         revalidate();
         repaint();
+
+        // Button actions
+        loginBtn.addActionListener(e -> openLoginPage());
+        createAccountBtn.addActionListener(e -> openCreateAccountPage());
     }
 
 

@@ -2,8 +2,7 @@ package org.onlinestore.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Map;
 import org.onlinestore.software.Item;
 import org.onlinestore.software.OnlineStore;
 import org.onlinestore.people.Customer;
@@ -81,8 +80,8 @@ public class CustomerHomePage extends JPanel {
 
     // Creates customer's Cart page
     private JPanel createCartPage() {
-    	
-    	// BorderLayout and apply theme background
+
+        // BorderLayout and apply theme background
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(ThemeGUI.BACKGROUND_COLOR);
 
@@ -111,14 +110,14 @@ public class CustomerHomePage extends JPanel {
 
             panel.add(centered, BorderLayout.CENTER);
 
-        } 
+        }
         else {
 
-            // Hash to save items so they do not display as duplicates in the customer's cart
-            Set<Item> preventItemDuplicate = new LinkedHashSet<>(customer.getCart().getItems());
+        	// Gets each item in the cart only once, even if the customer added the same item multiple times
+            for (Map.Entry<Item, Integer> entry : customer.getCart().getItemsGrouped().entrySet()) {
 
-            // Adds a display for each item type
-            for (Item item : preventItemDuplicate) {
+                Item item = entry.getKey();
+
                 cartItemDisplay.add(createCartItemDisplay(item));
                 cartItemDisplay.add(Box.createVerticalStrut(10));
             }
@@ -128,6 +127,7 @@ public class CustomerHomePage extends JPanel {
             scroll.setBorder(null);
             scroll.getViewport().setBackground(ThemeGUI.BACKGROUND_COLOR);
             panel.add(scroll, BorderLayout.CENTER);
+            scroll.getVerticalScrollBar().setUnitIncrement(40);
         }
 
         // Back button for returning to customer home page and checkout button
@@ -167,13 +167,11 @@ public class CustomerHomePage extends JPanel {
         cartItemDisplay.setPreferredSize(new Dimension(500, 140));
 
         // Keeps track of the quantity of a particular item in the cart
-        long quantityInCart = customer.getCart().getItems().stream()
-                .filter(i -> i == item)
-                .count();
+        long quantityInCart = customer.getCart().getQuantityOfItem(item);
 
         // Text for all of the item's attributes
         JTextArea itemAttributes = new JTextArea(
-                "Name: " + item.getName() + "\n" +
+                item.getName() + "\n" +
                 "Price: $" + item.getPrice() + "\n" +
                 "Description: " + item.getDescription() + "\n" +
                 "Quantity in Cart: " + quantityInCart
@@ -181,7 +179,7 @@ public class CustomerHomePage extends JPanel {
         itemAttributes.setEditable(false);
         itemAttributes.setBackground(ThemeGUI.PANEL_COLOR);
         itemAttributes.setForeground(ThemeGUI.TEXT_MAIN);
-        itemAttributes.setFont(ThemeGUI.REGULAR_FONT);
+        itemAttributes.setFont(ThemeGUI.SCROLL_FONT);
 
         cartItemDisplay.add(itemAttributes, BorderLayout.CENTER);
 
@@ -240,25 +238,13 @@ public class CustomerHomePage extends JPanel {
 
         int newQty = Integer.parseInt(text);
 
-        // If user enters same quantity then no changes are made
-        if (newQty == currentQty) return;
+        // Updates item quantity in inventory
+        boolean updated = customer.getCart().updateQuantity(item, newQty, store.getInventory());
 
-        // Checks the difference between the old quantity and the new quantity
-        int quantityDifference = newQty - (int) currentQty;
-
-        // Adds more of the item to cart and displays message if not enough inventory is available
-        if (quantityDifference > 0) {
-            if (quantityDifference > item.getQuantity()) {
-                HelperGUI.error(parent, "We're sorry. There is not enough quantity in inventory.");
-                return;
-            }
-            customer.getCart().addItems(item, quantityDifference);
-        }
-        // Removes items from cart using appropriate quantity
-        else {
-            int quantityRemoved = -quantityDifference;
-            for (int i = 0; i < quantityRemoved; i++)
-                customer.getCart().removeItem(item, store.getInventory());
+        // Displays error message if there is not enough inventory
+        if (!updated) {
+            HelperGUI.error(parent, "We're sorry. There is not enough quantity in inventory.");
+            return;
         }
 
         HelperGUI.information(parent, "Quantity updated.");
