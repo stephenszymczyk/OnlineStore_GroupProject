@@ -183,7 +183,8 @@ public class CustomerHomePage extends JPanel {
 
         // Removes this item from the cart
         removeBtn.addActionListener(e -> {
-            customer.getCart().removeItem(item, store.getInventory());
+            int qty = customer.getCart().getQuantityOfItem(item);
+            customer.getCart().removeItems(item, qty, store.getInventory());
             HelperFunctionsGUI.information(parent, "Item removed from cart.");
             refreshCartPage();
         });

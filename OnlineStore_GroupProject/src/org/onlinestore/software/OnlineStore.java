@@ -148,14 +148,14 @@ public class OnlineStore implements Serializable {
                 return p;
             }
         }
-        System.out.println("Incorrect username or password.");
+        System.out.println("");
         return null;
     }
 
     public Customer createAccount(String name, String username, String password, Address address) {
 
         if (!usernameAvailable(username)) {
-            System.out.println("This username is unavailable.");
+            System.out.println("");
             return null; 
         }
 
@@ -163,14 +163,14 @@ public class OnlineStore implements Serializable {
 
         users.add(c);
 
-        System.out.println("Account created successfully.");
+        System.out.println("");
         return c;
     }
     
     public void saveOnlineStore() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("OnlineStore.ser"))) {
             out.writeObject(this);
-            System.out.println("Saved successfully");
+            System.out.println("");
         } 
         catch (Exception e) {
             System.out.println("Save failed");
